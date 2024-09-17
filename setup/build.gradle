@@ -1,0 +1,21 @@
+plugins {
+    id "net.saliman.properties" version "1.5.2"
+    id "com.marklogic.ml-gradle" version "5.0.0"
+    id "java"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "com.marklogic:flux-api:1.0.0"
+}
+
+tasks.register("importEventsArchive", JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = "ImportEventsArchive"
+    args = ["${mlUsername}:${mlPassword}@${mlHost}:${mlRestPort}"]
+    jvmArgs = ['--add-exports=java.base/sun.nio.ch=ALL-UNNAMED']
+}
+mlDeploy.finalizedBy importEventsArchive

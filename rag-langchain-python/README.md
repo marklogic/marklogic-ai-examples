@@ -18,24 +18,6 @@ application. Additionally, please see the
 smaller documents in your database so that you do not exceed the limit that langchain imposes on how
 much data a retriever can return.
 
-# Setup
-
-To try out this project, use [docker-compose](https://docs.docker.com/compose/) to instantiate a new MarkLogic 
-instance with port 8003 available (you can use your own MarkLogic instance too, just be sure that port 8003
-is available):
-
-    docker-compose up -d --build
-
-## Deploy With Gradle
-
-Ensure that the `docker-compose` command above has completed by accessing the MarkLogic admin application - this will
-be available at <http://localhost:8001> once MarkLogic has initialized itself. 
-
-Then deploy a small REST API application to MarkLogic, which includes a basic non-admin MarkLogic user 
-named `langchain-user`:
-
-    ./gradlew -i mlDeploy
-
 ## Install Python Libraries
 
 Next, create a new Python virtual environment - [pyenv](https://github.com/pyenv/pyenv) is recommended for this - 
@@ -44,13 +26,6 @@ and install the
 along with the MarkLogic Python Client: 
 
     pip install -U langchain langchain_openai langchain-community langchainhub openai chromadb bs4 marklogic_python_client
-
-## Load Sample Data
-
-Then run the following Python program to load text data from the langchain quickstart guide 
-into two different collections in the `langchain-test-content` database:
-
-    python load_data.py
 
 ## Create Python Environment File
 
@@ -69,25 +44,17 @@ AZURE_LLM_DEPLOYMENT_MODEL=gpt-35-turbo
 ## Testing using a retriever with a basic query
 
 You are now ready to test the example retriever. Run the following to ask a question
-with the results augmented via the `marklogic_similar_query_retriever.py` module in this
+with the results augmented via the `word_query_retriever.py` module in this
 project:
 
-    python ask_similar_query.py "What is task decomposition?" posts
+    python ask_word_query.py "What disturbances has Joe Blow caused?"
 
-The retriever uses a [cts.similarQuery](https://docs.marklogic.com/cts.similarQuery) to
+The retriever uses MarkLogic's support for indexing and searching on every word in documents loaded into MarkLogic.
+By default, the retriever loads at most 10 documents. You can change this by providing a different number of documents
+to retrieve after the question:
 select from the documents loaded via `load_data.py`. It defaults to a page length of 10.
-You can change this by providing a command line argument - e.g.:
 
-    python ask_similar_query.py "What is task decomposition?" posts 15
-
-Example of a question for the "sotu" (State of the Union speech) collection:
-
-    python ask_similar_query.py "What are economic sanctions?" sotu 20
-
-To use a word query instead of a similar query, along with a set of drop words, specify
-"word" as the 4th argument:
-
-    python ask_similar_query.py "What are economic sanctions?" sotu 20 word
+    python ask_similar_query.py "What disturbances has Joe Blow caused?" 15
 
 ## Testing using a retriever with a contextual query
 
