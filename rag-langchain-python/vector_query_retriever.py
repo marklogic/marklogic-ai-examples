@@ -70,7 +70,8 @@ op.fromSearchDocs(
         query_embedding = self.embedding_generator.embed_query(query)
         eval_script = self._build_eval_script(query, query_embedding)
         results = self.client.eval(javascript=eval_script)
-        if results is dict:  # Indicates that the eval call failed.
-            raise SystemError(results.text)
-        print(f"Count of matching MarkLogic documents: {len(results)}")
+
+        print(f"Count of MarkLogic documents sent to the LLM: {len(results)}")
+        for result in results:
+            print(f"URI: {result['uri']}")
         return map(lambda doc: Document(page_content=doc["text"]), results)

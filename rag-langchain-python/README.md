@@ -1,38 +1,32 @@
 # RAG with langchain and MarkLogic
 
-This project demonstrates one approach for implementing a 
-[langchain retriever](https://python.langchain.com/docs/modules/data_connection/)
-that allows for 
-[Retrieval Augmented Generation (RAG)](https://python.langchain.com/docs/use_cases/question_answering/)
-to be supported via MarkLogic and the MarkLogic Python Client. This example uses the same data as in 
-[the langchain RAG quickstart guide](https://python.langchain.com/docs/use_cases/question_answering/quickstart), 
-but with the data having first been loaded into MarkLogic.
+[Retrieval Augmented Generation (RAG)](https://python.langchain.com/docs/tutorials/rag/) is implemented with 
+[langchain](https://python.langchain.com/docs/introduction/) and MarkLogic via a "retriever". The examples in this
+directory demonstrate three different kinds of retriever that you can consider for your own AI application.
 
-**This is only intended as an example** of how easily a langchain retriever can be developed
-using the MarkLogic Python Client. The queries in this example are simple and naturally 
-do not have any knowledge of how your data is modeled in MarkLogic. You are encouraged to use 
-this as an example for developing your own retriever, where you can build a query based on a 
-question submitted to langchain that fully leverages the indexes and data models in your MarkLogic
-application. Additionally, please see the 
-[langchain documentation on splitting text](https://python.langchain.com/docs/modules/data_connection/document_transformers/). You may need to restructure your data so that you have a larger number of 
-smaller documents in your database so that you do not exceed the limit that langchain imposes on how
-much data a retriever can return.
+## Setup
 
-## Install Python Libraries
+To try these examples, you should first create a new Python virtual environment. There are many ways to do this; 
+you can use a tool such as [pyenv](https://github.com/pyenv/pyenv), or just follow these simple steps that 
+[create a virtual environment using `venv`](https://docs.python.org/3/library/venv.html):
 
-Next, create a new Python virtual environment - [pyenv](https://github.com/pyenv/pyenv) is recommended for this - 
-and install the 
-[langchain example dependencies](https://python.langchain.com/docs/use_cases/question_answering/quickstart#dependencies),
-along with the MarkLogic Python Client: 
+```
+# Run this if you are not already in this example directory.
+cd rag-langchain-python
+python -m venv .venv
+source .venv/bin/activate
+```
 
-- python -m venv .venv` to [create a virtual environment](https://docs.python.org/3/library/venv.html).
-- source .venv/bin/activate` to use that virtual environment.
-- pip install -U langchain langchain_openai langchain-community langchainhub openai chromadb bs4 marklogic_python_client`
+Once you have a virtual environment created, run the following to install the necessary langchain dependencies along 
+with the [MarkLogic Python client](https://pypi.org/project/marklogic-python-client/):
 
-## Create Python Environment File
+    pip install --quiet --upgrade langchain langchain-community langchain_openai marklogic_python_client
 
-Create a ".env" file to hold your AzureOpenAI environment values. It should look
-something like this.
+Next, create a Python `.env` file to hold your Azure OpenAI environment values. The file must contain the keys and
+values shown below. You must replace the values of `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_API_KEY` with the 
+appropriate values based on your Azure OpenAI account. You should also modify the values of `AZURE_LLM_DEPLOYMENT_NAME`
+and `AZURE_LLM_DEPLOYMENT_MODEL` based on the Azure OpenAI deployment you wish to use. 
+
 ```
 OPENAI_API_VERSION=2023-12-01-preview
 AZURE_OPENAI_ENDPOINT=<Your Azure OpenAI Endpoint>
@@ -41,87 +35,89 @@ AZURE_LLM_DEPLOYMENT_NAME=gpt-test1-gpt-35-turbo
 AZURE_LLM_DEPLOYMENT_MODEL=gpt-35-turbo
 ```
 
-# Testing the retriever
+You are now ready to execute the example RAG programs. 
 
-## Testing using a retriever with a basic query
+## RAG with a simple word query
 
-You are now ready to test the example retriever. Run the following to ask a question
-with the results augmented via the `word_query_retriever.py` module in this
-project:
+A key feature of MarkLogic is its ability to index all text in a document during ingest. Thus, a simple approach to RAG
+with MarkLogic is to select documents based on the words in a user's question. 
 
-    python ask_word_query.py "What disturbances has Joe Blow caused?"
+To demonstrate this, you can run the `ask_word_query.py` module with any question. The module uses a custom langchain
+retriever that selects documents in the `ai-examples-content` MarkLogic database containing one or more of the words
+and then includes the top 10 most relevant documents in the request that it sends to Azure OpenAI. For example:
 
-The retriever uses MarkLogic's support for indexing and searching on every word in documents loaded into MarkLogic.
-By default, the retriever loads at most 10 documents. You can change this by providing a different number of documents
-to retrieve after the question:
-select from the documents loaded via `load_data.py`. It defaults to a page length of 10.
+    python ask_word_query.py "What disturbances has Jane Doe caused?" 
 
-    python ask_similar_query.py "What disturbances has Joe Blow caused?" 15
+Running this will yield an answer similar to the below (the answer can vary based on the LLM in use and the nature
+of the configured deployment model):
 
-## Testing using a retriever with a contextual query
+> Jane Doe has caused disturbances such as public intoxication, yelling and banging on doors and windows,
+> accessing confidential information without authorization, and vandalizing a building. The motives for
+> her behavior are unclear, but it may be related to personal vendettas or coping with personal issues.
 
-There may be times when your langchain application needs to use both a question and a
-structured query during the document retrieval process. To see an example of this, run
-the following to ask a question. That question is combined with a hard-coded structured
-query using the `marklogic_contextual_query_retriever.py` module in this project.
+## RAG with a contextual query
 
-    python ask_contextual_query.py "What is task decomposition?" posts
+In many applications built on MarkLogic, a user will search the documents in a database by leveraging a variety of 
+indexes in MarkLogic, such as the universal text index, date range indexes, and geospatial indexes. This query - which
+can feature any of the many dozens of different query functions supported by MarkLogic - is referred to as a 
+"contextual query" - it captures the user's context in terms of what documents they are interested in. A RAG approach
+can then account for both this contextual query and a user's question by enhancing the contextual query with a word 
+query based on the words in a user's question. 
 
-This retriever builds a term-query using words from the question. Then the term-query is
-added to the structured query and the merged query is used to select from the documents 
-loaded via `load_data.py`.
+The `ask_contextual_query.py` module demonstrates this approach by defining a simple contextual query that only 
+selects documents containing a JSON property named `type` with a value of `public intoxication`. 
+Try running the following:
 
-## Testing using MarkLogic 12EA Vector Search
+    python ask_contextual_query.py "What disturbances has Jane Doe caused?" 
 
-### MarkLogic 12EA Setup
+The answer will be similar to the one below. You can see how the results are based only on documents involving public
+intoxication as opposed to the entire set of fictional crime events:
 
-To try out this functionality out, you will need access to an instance of MarkLogic 12
-(currently internal or Early Access only).
-<TODO>Add info to get ML12</TODO>
-You may use docker 
-[docker-compose](https://docs.docker.com/compose/) to instantiate a new MarkLogic
-instance with port 8003 available (you can use your own MarkLogic instance too, just be
-sure that port 8003 is available):
+> Jane Doe has caused disturbances by stumbling around, slurring her words, and causing a disturbance in 
+> public areas. She has been reported to be yelling at people passing by and blocking the entrance to a 
+> nearby store. There are concerns for her safety and the safety of others around her.
 
-    docker compose -f docker-compose-12.yml up -d --build
+## RAG with a vector query 
 
-### Deploy With Gradle
+MarkLogic 12 has 
+[new support for generative AI capabilities](https://investors.progress.com/news-releases/news-release-details/progress-announces-powerful-new-generative-ai-capabilities)
+via a set of [vector operations](https://docs.marklogic.com/12.0/vec/vector-operations). With this approach, 
+documents are first selected in a manner similar to the approaches shown above - by leveraging the powerful and flexible
+set of indexes that have long been available in MarkLogic. The documents are then further filtered and sorted via 
+the following process:
 
-You will also need to deploy the application. However, for this example, you will need
-to include an additional switch on the command line to deploy a TDE schema that takes
-advantage of the vector capabilities in MarkLogic 12.
+1. An embedding of the user's question is generated using [langchain and Azure OpenAI](https://python.langchain.com/docs/integrations/text_embedding/). 
+2. Using MarkLogic's new vector API, the generated embedding is compared against the embeddings in each 
+selected crime event document to generate a similarity score for each document.
+3. The documents with the highest similarity scores are sent to the LLM to augment the user's question.
 
-    ./gradlew -i mlDeploy -PmlSchemasPath=src/main/ml-schemas-12
+To try the `ask_vector_query.py` module, you will need to have installed MarkLogic 12. Please see the
+[top-level README in this repository](../README.md) for information on doing so. 
 
-### Install Python Libraries
-
-As above, if you have not yet installed the Python libraries, install this with pip:
-```
-pip install -U langchain langchain_openai langchain-community langchainhub openai chromadb bs4 marklogic_python_client
-```
-
-### Create Python Environment File
-The Python script for this example also generates LLM embeddings and includes them in
-the documents stored in MarkLogic. In order to generate the embeddings, you'll need to
-add the following environment variables (with your values) to the .env file created
-above.
+You will also need to add the following environment values to your `.env` file - these identify the Azure OpenAI 
+embedding model that the example program will use to generate an embedding for your question:
 
 ```
 AZURE_EMBEDDING_DEPLOYMENT_NAME=text-test-embedding-ada-002
 AZURE_EMBEDDING_DEPLOYMENT_MODEL=text-embedding-ada-002
 ```
 
-### Running the Vector Query
+You can now run `ask_vector_query.py`:
 
-You are now ready to test the example vector retriever. Run the following to ask a
-question with the results augmented via the `marklogic_vector_query_retriever.py` module
-in this project:
+    python ask_vector_query.py "What disturbances has Jane Doe caused?"
 
-    python ask_vector_query.py "What disturbances has Joe Blow caused?" 10
+An example result is shown below:
 
-This retriever searches MarkLogic for candidate documents, and defaults to
-using the new score-bm25 scoring method in MarkLogic 12EA. If preferred, you can adjust
-this to one of the other scoring methods. After retrieving candidate documents based on
-the CTS search, the retriever uses the new vector functionality to sort the documents
-based on cosine similarity to the user question, and then returns the top N documents
-for the retriever to package up.
+> Jane Doe has caused disturbances of the peace, including yelling, screaming, banging on doors and windows, 
+> and vandalism. The motives for her behavior are unclear, but it may be related to personal issues or 
+> mental health problems. She has been described as agitated, upset, and heavily intoxicated.
+
+The results are similar but slightly different to the results shown above for a simple word query. You can compare
+the document URIs printed by each program to see that a different set of document is selected by each approach.
+
+## Summary
+
+The three RAG approaches shown above - a simple word query, a contextual query, and a vector query - demonstrate how
+easily data can be queried and retrieved from MarkLogic using langchain. Identifying the optimal approach for your own
+data will require testing the approaches you choose and possibly leveraging additional MarkLogic indexes and/or 
+further enriching your data. 
