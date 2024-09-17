@@ -26,8 +26,8 @@ retriever = MarkLogicVectorQueryRetriever.create(
     Client("http://localhost:8003", digest=("langchain-user", "password")),
     embedding_generator=embeddings,
 )
-retriever.collections = [sys.argv[2]]
-retriever.max_results = int(sys.argv[3]) if len(sys.argv) > 3 else 10
+retriever.collections = ["event-with-embedding"]
+retriever.max_results = int(sys.argv[2]) if len(sys.argv) > 2 else 10
 if len(sys.argv) > 4:
     retriever.query_type = sys.argv[4]
 

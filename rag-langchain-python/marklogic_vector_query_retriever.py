@@ -27,8 +27,8 @@ class MarkLogicVectorQueryRetriever(BaseRetriever):
         return cls(
             client=client,
             embedding_generator=embedding_generator,
-            tde_schema=tde_schema or "demo",
-            tde_view=tde_view or "posts",
+            tde_schema=tde_schema or "crime",
+            tde_view=tde_view or "event",
             scoring_method=scoring_method,
         )
 
@@ -40,43 +40,47 @@ class MarkLogicVectorQueryRetriever(BaseRetriever):
         # gpt-35-turbo (1106): 16,385/4,096
         # gpt-35-turbo-16k (0613):
 
-        # This JavaScript consists of two queries.
-        # The first is a standard cts search, searching for words that match those used
-        # in the chat question.
-        # The second query is an Optic query that uses the top documents from the CTS
-        # query to do a vector search to re-order the results.
+        # This JavaScript consists of a single Optic query. The Optic query
+        # starts with a word query to find candidate documents. It then uses
+        # a join to match the embeddings up with the candidate documents.
+        # Next, it performs a cosine similarity operation and sorts the
+        # candidate documents based on the results of that operation. Finally,
+        # it returns those documents to the chain.
 
         search_words = []
         for word in query.split():
             search_words.append(word.lower().replace("?", ""))
         return """
-            const op = require('/MarkLogic/optic');
-            const ovec = require('/MarkLogic/optic/optic-vec.xqy');
-            const result =
-                fn.subsequence(cts.search(cts.andQuery([
-                    cts.wordQuery({}),
-                    cts.collectionQuery({})
-                ]),["{}"]), 1, {});
-            let uris = [];
-            for(const doc of result){{
-                uris.push(xdmp.nodeUri(doc))
-            }}
-            const qv = vec.vector({})
-
-            const rows = op.fromView('{}','{}','')
-            .where(op.in(op.col('uri'), uris))
-            .bind(op.as('summaryCosineSim', op.vec.cosineSimilarity(op.vec.vector(op.col('embedding')),qv)))
-            .orderBy(op.desc(op.col('summaryCosineSim')))
-            .result();
-            rows;
+const op = require('/MarkLogic/optic');
+ 
+op.fromSearchDocs(
+      cts.andQuery([cts.wordQuery({}),cts.collectionQuery({})]),
+      null,
+      {{'scoreMethod': '{}'}}
+  )
+  .limit({})
+  .joinInner(
+    op.fromView('{}','{}', '', op.fragmentIdCol('vectorsDocId')),
+    op.on(
+      op.fragmentIdCol('fragmentId'),
+      op.fragmentIdCol('vectorsDocId')
+    )
+  )
+  .bind(op.as('summaryCosineSim', 
+      op.vec.cosineSimilarity(
+          op.vec.vector(op.col('embedding')),
+          op.vec.vector(vec.vector({}))
+      )
+  ))
+  .result()
         """.format(
             search_words,
             self.collections,
             self.scoring_method,
             self.max_results,
-            query_embedding,
             self.tde_schema,
             self.tde_view,
+            query_embedding,
         )
 
     def _get_relevant_documents(self, query: str) -> List[Document]:
