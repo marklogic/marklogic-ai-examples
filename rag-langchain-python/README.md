@@ -81,7 +81,7 @@ You may use docker
 instance with port 8003 available (you can use your own MarkLogic instance too, just be
 sure that port 8003 is available):
 
-    docker-compose -f docker-compose-12.yml up -d --build
+    docker compose -f docker-compose-12.yml up -d --build
 
 ### Deploy With Gradle
 

@@ -1,5 +1,5 @@
 version: '3.8'
-name: marklogic_example_langchain_12
+name: marklogic-12-ai-examples
 
 services:
 

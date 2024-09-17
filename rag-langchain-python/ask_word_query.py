@@ -19,10 +19,8 @@ def format_docs(docs):
 question = sys.argv[1]
 
 retriever = WordQueryRetriever.create(
-    Client("http://localhost:8003", digest=("langchain-user", "password"))
+    Client("http://localhost:8003", digest=("ai-examples-user", "password"))
 )
-retriever.collections = ["event"]
-retriever.max_results = int(sys.argv[2]) if len(sys.argv) > 2 else 10
 
 load_dotenv()
 
@@ -38,10 +36,10 @@ llm = AzureChatOpenAI(
 )
 
 rag_chain = (
-        {"context": retriever | format_docs, "question": RunnablePassthrough()}
-        | prompt
-        | llm
-        | StrOutputParser()
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
 )
 
 print(rag_chain.invoke(question))

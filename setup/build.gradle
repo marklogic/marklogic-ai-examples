@@ -1,21 +1,28 @@
 plugins {
     id "net.saliman.properties" version "1.5.2"
     id "com.marklogic.ml-gradle" version "5.0.0"
-    id "java"
 }
 
-repositories {
-    mavenCentral()
+tasks.register("dockerMarkLogic12", Exec) {
+  workingDir "."
+  commandLine "docker", "compose", "-f", "docker-compose-12.yml", "up", "-d", "--build"
 }
 
-dependencies {
-    implementation "com.marklogic:flux-api:1.0.0"
+tasks.register("addSchemasIfMarkLogic12", com.marklogic.gradle.task.MarkLogicTask) {
+    description = "Adds the ml-schemas-12 folder to the project config if the user is running MarkLogic 12."
+    doLast {
+        if (getAdminManager().getServerVersion().startsWith("12")) {
+            getAppConfig().getSchemaPaths().add(new File(getProjectDir(), "src/main/ml-schemas-12").getAbsolutePath())
+        }
+    }
 }
+mlDeploy.dependsOn addSchemasIfMarkLogic12
+mlLoadSchemas.dependsOn addSchemasIfMarkLogic12
 
-tasks.register("importEventsArchive", JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = "ImportEventsArchive"
-    args = ["${mlUsername}:${mlPassword}@${mlHost}:${mlRestPort}"]
-    jvmArgs = ['--add-exports=java.base/sun.nio.ch=ALL-UNNAMED']
+tasks.register("extractEvents", Copy) {
+  description = "Extracts the events zip so they can be loaded via mlDeploy / mlLoadData from a gitignored directory."
+  from zipTree("data/events.zip")
+  into "src/main/ml-data"
 }
-mlDeploy.finalizedBy importEventsArchive
+mlDeploy.dependsOn extractEvents
+mlLoadData.dependsOn extractEvents
