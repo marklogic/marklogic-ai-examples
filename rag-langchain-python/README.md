@@ -25,7 +25,9 @@ and install the
 [langchain example dependencies](https://python.langchain.com/docs/use_cases/question_answering/quickstart#dependencies),
 along with the MarkLogic Python Client: 
 
-    pip install -U langchain langchain_openai langchain-community langchainhub openai chromadb bs4 marklogic_python_client
+- python -m venv .venv` to [create a virtual environment](https://docs.python.org/3/library/venv.html).
+- source .venv/bin/activate` to use that virtual environment.
+- pip install -U langchain langchain_openai langchain-community langchainhub openai chromadb bs4 marklogic_python_client`
 
 ## Create Python Environment File
 

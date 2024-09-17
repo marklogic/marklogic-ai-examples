@@ -24,7 +24,9 @@ retriever = WordQueryRetriever.create(
 
 load_dotenv()
 
-prompt = hub.pull("rlm/rag-prompt")
+fake_langsmith_api_key_to_avoid_warning = "not required for this example"
+prompt = hub.pull("rlm/rag-prompt", api_key=fake_langsmith_api_key_to_avoid_warning)
+
 # Note that the Azure OpenAI API key, the Azure OpenAI Endpoint, and the OpenAI API
 # Version are all read from the environment automatically.
 llm = AzureChatOpenAI(
