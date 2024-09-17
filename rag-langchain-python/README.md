@@ -73,7 +73,7 @@ loaded via `load_data.py`.
 
 ### MarkLogic 12EA Setup
 
-To try out this functionality out, you will need acces to an instance of MarkLogic 12
+To try out this functionality out, you will need access to an instance of MarkLogic 12
 (currently internal or Early Access only).
 <TODO>Add info to get ML12</TODO>
 You may use docker 
@@ -109,24 +109,13 @@ AZURE_EMBEDDING_DEPLOYMENT_NAME=text-test-embedding-ada-002
 AZURE_EMBEDDING_DEPLOYMENT_MODEL=text-embedding-ada-002
 ```
 
-### Load Sample Data
-
-Then run the following Python program to load text data from the langchain quickstart
-guide into two different collections in the `langchain-test-content` database. Note that
-this script is different than the one in the earlier setup section and loads the data
-into different collections.
-
-```
-python load_data_with_embeddings.py
-```
-
 ### Running the Vector Query
 
 You are now ready to test the example vector retriever. Run the following to ask a
 question with the results augmented via the `marklogic_vector_query_retriever.py` module
 in this project:
 
-    python ask_vector_query.py "What is task decomposition?" posts_with_embeddings
+    python ask_vector_query.py "What disturbances has Joe Blow caused?" 10
 
 This retriever searches MarkLogic for candidate documents, and defaults to
 using the new score-bm25 scoring method in MarkLogic 12EA. If preferred, you can adjust

@@ -2,12 +2,12 @@
   "template": {
     "context": "/",
     "collections": [
-      "posts_with_embeddings"
+      "event-with-embedding"
     ],
     "rows": [
       {
-        "schemaName": "demo",
-        "viewName": "posts",
+        "schemaName": "crime",
+        "viewName": "event",
         "columns": [
           {
             "name": "uri",
@@ -25,7 +25,19 @@
           {
             "name": "text",
             "scalarType": "string",
-            "val": "text",
+            "val": "transcript",
+            "nullable": true
+          },
+          {
+            "name": "type",
+            "scalarType": "string",
+            "val": "type",
+            "nullable": true
+          },
+          {
+            "name": "address",
+            "scalarType": "string",
+            "val": "address",
             "nullable": true
           }
         ]
