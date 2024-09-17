@@ -1,0 +1,33 @@
+{
+  "template": {
+    "context": "/",
+    "collections": [
+      "events"
+    ],
+    "rows": [
+      {
+        "schemaName": "example",
+        "viewName": "events",
+        "columns": [
+          {
+            "name": "uri",
+            "scalarType": "string",
+            "val": "xdmp:node-uri(.)"
+          },
+          {
+            "name": "embedding",
+            "scalarType": "vector",
+            "val": "vec:vector(embedding)",
+            "dimension": "1536",
+            "invalidValues": "reject"
+          },
+          {
+            "name": "text",
+            "scalarType": "string",
+            "val": "transcript"
+          }
+        ]
+      }
+    ]
+  }
+}

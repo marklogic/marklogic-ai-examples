@@ -9,7 +9,7 @@ following:
 
 ```
 cd setup
-docker-compose up -d --build
+docker compose up -d --build
 ./gradlew -i mlDeploy
 ```
 

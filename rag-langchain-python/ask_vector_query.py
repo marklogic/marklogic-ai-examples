@@ -9,9 +9,7 @@ from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
 from langchain.schema import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
 from marklogic import Client
-from marklogic_vector_query_retriever import (
-    MarkLogicVectorQueryRetriever,
-)
+from vector_query_retriever import VectorQueryRetriever
 
 
 def format_docs(docs):
@@ -19,17 +17,13 @@ def format_docs(docs):
 
 
 load_dotenv()
-embeddings = AzureOpenAIEmbeddings(
-    azure_deployment=os.environ["AZURE_EMBEDDING_DEPLOYMENT_NAME"]
+
+retriever = VectorQueryRetriever.create(
+    Client("http://localhost:8003", digest=("ai-examples-user", "password")),
+    embedding_generator=AzureOpenAIEmbeddings(
+        azure_deployment=os.environ["AZURE_EMBEDDING_DEPLOYMENT_NAME"]
+    )
 )
-retriever = MarkLogicVectorQueryRetriever.create(
-    Client("http://localhost:8003", digest=("langchain-user", "password")),
-    embedding_generator=embeddings,
-)
-retriever.collections = ["event-with-embedding"]
-retriever.max_results = int(sys.argv[2]) if len(sys.argv) > 2 else 10
-if len(sys.argv) > 4:
-    retriever.query_type = sys.argv[4]
 
 question = sys.argv[1]
 

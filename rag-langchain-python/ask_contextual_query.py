@@ -9,9 +9,7 @@ from langchain_openai import AzureChatOpenAI
 from langchain.schema import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
 from marklogic import Client
-from marklogic_contextual_query_retriever import (
-    MarkLogicContextualQueryRetriever,
-)
+from contextual_query_retriever import ContextualQueryRetriever
 
 
 def format_docs(docs):
@@ -20,13 +18,9 @@ def format_docs(docs):
 
 question = sys.argv[1]
 
-retriever = MarkLogicContextualQueryRetriever.create(
-    Client("http://localhost:8003", digest=("langchain-user", "password"))
+retriever = ContextualQueryRetriever.create(
+    Client("http://localhost:8003", digest=("ai-examples-user", "password"))
 )
-retriever.collections = [sys.argv[2]]
-retriever.max_results = int(sys.argv[3]) if len(sys.argv) > 3 else 10
-if len(sys.argv) > 4:
-    retriever.query_type = sys.argv[4]
 
 load_dotenv()
 
@@ -45,20 +39,15 @@ contextual_query = {
     "query": {
         "queries": [
             {
-                "near-query": [
-                    {"word-query": ["role"]},
-                    {"word-query": ["assistant"]},
-                ]
-            },
+                "value-query": {
+                    "json-property": "type",
+                    "text": "public intoxication"
+                }
+            }
         ]
-    },
+    }
 }
 chat_context = {"question": question, "contextual_query": contextual_query}
-
-
-def get_question():
-    return chat_context["question"]
-
 
 rag_chain = (
     {
@@ -69,4 +58,5 @@ rag_chain = (
     | llm
     | StrOutputParser()
 )
+
 print(rag_chain.invoke(input=chat_context))

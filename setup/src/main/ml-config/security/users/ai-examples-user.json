@@ -1,0 +1,8 @@
+{
+    "user-name": "ai-examples-user",
+    "password": "password",
+    "role": [
+        "ai-examples-role",
+        "qconsole-user"
+    ]
+}
