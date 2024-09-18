@@ -28,5 +28,7 @@ class WordQueryRetriever(BaseRetriever):
             page_length=10,
             collections=["events"],
         )
-        print(f"Count of matching MarkLogic documents: {len(results)}")
+        print(f"Count of MarkLogic documents sent to the LLM: {len(results)}")
+        for result in results:
+            print(f"URI: {result.uri}")
         return map(lambda doc: Document(page_content=doc.content["transcript"]), results)
