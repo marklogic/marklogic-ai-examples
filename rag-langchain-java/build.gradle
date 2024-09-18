@@ -1,0 +1,21 @@
+plugins {
+  id "net.saliman.properties" version "1.5.2"
+}
+
+dependencies {
+  implementation "com.marklogic:marklogic-client-api:7.0.0"
+  implementation "com.fasterxml.jackson.core:jackson-databind:2.17.2"
+  implementation "dev.langchain4j:langchain4j:0.34.0"
+  implementation "dev.langchain4j:langchain4j-azure-open-ai:0.34.0"
+
+  // For logging support.
+  implementation "ch.qos.logback:logback-classic:1.3.14"
+  implementation "org.slf4j:jcl-over-slf4j:2.0.13"
+  implementation "org.slf4j:slf4j-api:2.0.13"
+}
+
+tasks.register("wordQueryExample", JavaExec) {
+  mainClass = "org.example.WordQueryExample"
+  classpath = sourceSets.main.runtimeClasspath
+  args project.property("question"), AZURE_OPENAI_API_KEY, OPENAI_API_VERSION, AZURE_OPENAI_ENDPOINT, AZURE_LLM_DEPLOYMENT_NAME
+}
