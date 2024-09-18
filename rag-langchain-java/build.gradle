@@ -17,5 +17,13 @@ dependencies {
 tasks.register("wordQueryExample", JavaExec) {
   mainClass = "org.example.WordQueryExample"
   classpath = sourceSets.main.runtimeClasspath
-  args project.property("question"), AZURE_OPENAI_API_KEY, OPENAI_API_VERSION, AZURE_OPENAI_ENDPOINT, AZURE_LLM_DEPLOYMENT_NAME
+  args question, AZURE_OPENAI_API_KEY, OPENAI_API_VERSION, AZURE_OPENAI_ENDPOINT,
+    AZURE_LLM_DEPLOYMENT_NAME, AZURE_EMBEDDING_DEPLOYMENT_NAME
+}
+
+tasks.register("vectorQueryExample", JavaExec) {
+  mainClass = "org.example.VectorQueryExample"
+  classpath = sourceSets.main.runtimeClasspath
+  args question, AZURE_OPENAI_API_KEY, OPENAI_API_VERSION, AZURE_OPENAI_ENDPOINT,
+    AZURE_LLM_DEPLOYMENT_NAME, AZURE_EMBEDDING_DEPLOYMENT_NAME
 }

@@ -10,6 +10,7 @@ import com.marklogic.client.document.DocumentRecord;
 import com.marklogic.client.document.GenericDocumentManager;
 import com.marklogic.client.io.JacksonHandle;
 import com.marklogic.client.query.QueryManager;
+import com.marklogic.client.query.StructuredQueryBuilder;
 import com.marklogic.client.query.StructuredQueryDefinition;
 import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.segment.TextSegment;
@@ -29,9 +30,11 @@ public class WordQueryContentRetriever implements ContentRetriever {
 
     private final QueryManager queryManager;
     private final GenericDocumentManager documentManager;
+    private final StructuredQueryBuilder queryBuilder;
 
     public WordQueryContentRetriever(DatabaseClient client) {
         queryManager = client.newQueryManager();
+        queryBuilder = queryManager.newStructuredQueryBuilder();
         documentManager = client.newDocumentManager();
         documentManager.setPageLength(10);
     }
@@ -42,8 +45,12 @@ public class WordQueryContentRetriever implements ContentRetriever {
             .filter(term -> term.length() > 3 || Character.isUpperCase(term.charAt(0)))
             .collect(Collectors.toList());
 
-        StructuredQueryDefinition sq = queryManager.newStructuredQueryBuilder().term(terms.toArray(new String[]{}));
-        DocumentPage page = documentManager.search(sq, 1);
+        StructuredQueryDefinition structuredQuery = queryBuilder.and(
+            queryBuilder.term(terms.toArray(new String[]{})),
+            queryBuilder.collection("events")
+        );
+
+        DocumentPage page = documentManager.search(structuredQuery, 1);
 
         List<Content> results = new ArrayList<>();
         while (page.hasNext()) {
