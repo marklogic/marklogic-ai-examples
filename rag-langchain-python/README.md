@@ -2,7 +2,7 @@
 
 [Retrieval Augmented Generation (RAG)](https://python.langchain.com/docs/tutorials/rag/) is implemented with 
 [langchain](https://python.langchain.com/docs/introduction/) and MarkLogic via a "retriever". The examples in this
-directory demonstrate three different kinds of retriever that you can consider for your own AI application.
+directory demonstrate three different kinds of retrievers that you can consider for your own AI application.
 
 ## Setup
 
@@ -44,7 +44,8 @@ with MarkLogic is to select documents based on the words in a user's question.
 
 To demonstrate this, you can run the `ask_word_query.py` module with any question. The module uses a custom langchain
 retriever that selects documents in the `ai-examples-content` MarkLogic database containing one or more of the words
-and then includes the top 10 most relevant documents in the request that it sends to Azure OpenAI. For example:
+in the given question. It then includes the top 10 most relevant documents in the request that it sends to Azure OpenAI. 
+For example:
 
     python ask_word_query.py "What disturbances has Jane Doe caused?" 
 

@@ -7,3 +7,4 @@ venv
 .env
 *.iml
 __pycache__
+gradle-local.properties

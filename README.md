@@ -20,7 +20,7 @@ and to deploy a small application to it:
 to create a new instance of MarkLogic running on Docker. It will attempt to bind to ports 8000 through 8003, so ensure
 that those are available. 
 4. Otherwise, if you have your own instance of MarkLogic running, ensure that port 8003 is available.
-5. Run `./gradlew -i mlDeploy` to deploy a small application to MarkLogic containing 500 fictional crime events.
+5. Run `../gradlew -i mlDeploy` to deploy a small application to MarkLogic containing 500 fictional crime events.
 
 Some examples require the use of MarkLogic 12, which is currently only available via an early access program or for
 Progress MarkLogic employees. If you would like to use these features, run the following command for installing 
