@@ -1,0 +1,16 @@
+{
+  "name": "rag-langchain-js",
+  "version": "1.0.0",
+  "description": "An example of using MarkLogic as a retriever in a LangChain JS RAG project.",
+  "type": "module",
+  "scripts": {
+    "wordQuery": "node wordQuery"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@langchain/core": "^0.3.2",
+    "dotenv": "^16.4.5",
+    "langchain": "^0.3.2"
+  }
+}
