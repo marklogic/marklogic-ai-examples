@@ -8,3 +8,4 @@ venv
 *.iml
 __pycache__
 gradle-local.properties
+node_modules/
