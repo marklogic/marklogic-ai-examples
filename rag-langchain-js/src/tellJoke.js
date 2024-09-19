@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import { AzureChatOpenAI, AzureOpenAI } from "@langchain/openai";
+import { AzureChatOpenAI } from "@langchain/openai";
 
 config();
 const model = new AzureChatOpenAI({ });
