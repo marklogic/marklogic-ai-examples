@@ -16,7 +16,7 @@ def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 
-load_dotenv()
+load_dotenv("../.env")
 
 retriever = VectorQueryRetriever.create(
     Client("http://localhost:8003", digest=("ai-examples-user", "password")),

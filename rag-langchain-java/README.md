@@ -11,14 +11,6 @@ Visual Code or IntelliJ. You can also use [Gradle](https://gradle.org/) to run t
 need Gradle installed - this repository uses the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) 
 to download an appropriate version of Gradle.
 
-As these examples depend on Azure OpenAI, you will need to configure several properties to connect and authenticate 
-using your own Azure Open AI subscript:
-
-1. Create a file named `gradle-local.properties` in the root of this repository.
-2. Add `AZURE_OPENAI_API_KEY=your key` to the file. 
-3. Examine the `gradle.properties` file in the root of this repository. Override each of these properties as needed
-by defining them with the correct value in `gradle-local.properties`.
-
 ## RAG with a simple word query
 
 A key feature of MarkLogic is its ability to index all text in a document during ingest. Thus, a simple approach to RAG
@@ -29,7 +21,7 @@ langchain retriever that selects documents in the `ai-examples-content` MarkLogi
 in the given question. It then includes the top 10 most relevant documents in the request that it sends to Azure OpenAI.
 For example:
 
-    ../gradlew wordQueryExample -Pquestion="What disturbances has Jane Doe caused?"
+    ../gradlew askWordQuery -Pquestion="What disturbances has Jane Doe caused?"
 
 Running this will yield an answer similar to the below (the answer can vary based on the LLM in use and the nature
 of the configured deployment model):
@@ -68,15 +60,13 @@ the following process:
    selected crime event document to generate a similarity score for each document.
 3. The documents with the highest similarity scores are sent to the LLM to augment the user's question.
 
-To try RAG with a vector query, you will need to have installed MarkLogic 12. Please see the
-[top-level README in this repository](../README.md) for information on doing so.
-
-Additionally, check the value of the `AZURE_EMBEDDING_DEPLOYMENT_NAME` properties in the `gradle.properties` file 
-in the root of this repository. You can override this value by setting it in `gradle-local.properties`.
+To try RAG with a vector query, you will need to have installed MarkLogic 12 and also have defined
+`AZURE_EMBEDDING_DEPLOYMENT_NAME` in your `.env` file. Please see the
+[top-level README in this repository](../README.md) for more information.
 
 You can now run the Gradle `vectorQueryExample` task:
 
-    ./gradlew vectorQueryExample -Pquestion="What disturbances has Jane Doe caused?" 
+    ../gradlew askVectorQuery -Pquestion="What disturbances has Jane Doe caused?" 
 
 An example result is shown below:
 

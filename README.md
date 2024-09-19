@@ -28,7 +28,32 @@ MarkLogic via Docker instead of the command above:
 
     docker compose -f docker-compose-12.yml up -d --build
 
+### Azure OpenAI configuration
+
+For any AI example program, it needs to connect to an AI service. The examples in this repository depend on 
+[the Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service), though they can be 
+easily tailored to work with any AI service. 
+
+If you would like to run the examples as-is and have an Azure OpenAI account, you will need to create a file in the
+root of this repository named `.env` with the following keys and values:
+
+```
+OPENAI_API_VERSION=2023-12-01-preview
+AZURE_OPENAI_ENDPOINT=<Your Azure OpenAI endpoint>
+AZURE_OPENAI_API_KEY=<Your Azure OpenAI API key>
+AZURE_LLM_DEPLOYMENT_NAME=<The name of an LLM deployment in your Azure OpenAI service>
+```
+
+If you are running MarkLogic 12 and would like to run the examples that involve vector queries, you will also need
+to add the following to your `.env` file.
+
+```
+AZURE_EMBEDDING_DEPLOYMENT_NAME=<The name of an embedding deployment in your Azure OpenAI service>
+```
+
 ## RAG Examples
+
+TODO, needs updating.
 
 MarkLogic excels at supporting RAG, or ["Retrieval-Augmented Generation"](https://python.langchain.com/docs/tutorials/rag/),
 via its schema-agnostic nature as well as it's powerful and flexible indexing. 

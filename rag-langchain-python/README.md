@@ -22,19 +22,6 @@ with the [MarkLogic Python client](https://pypi.org/project/marklogic-python-cli
 
     pip install --quiet --upgrade langchain langchain-community langchain_openai marklogic_python_client
 
-Next, create a Python `.env` file to hold your Azure OpenAI environment values. The file must contain the keys and
-values shown below. You must replace the values of `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_API_KEY` with the 
-appropriate values based on your Azure OpenAI account. You should also modify the values of `AZURE_LLM_DEPLOYMENT_NAME`
-and `AZURE_LLM_DEPLOYMENT_MODEL` based on the Azure OpenAI deployment you wish to use. 
-
-```
-OPENAI_API_VERSION=2023-12-01-preview
-AZURE_OPENAI_ENDPOINT=<Your Azure OpenAI Endpoint>
-AZURE_OPENAI_API_KEY=<Your Azure OpenAI API Key>
-AZURE_LLM_DEPLOYMENT_NAME=gpt-test1-gpt-35-turbo
-AZURE_LLM_DEPLOYMENT_MODEL=gpt-35-turbo
-```
-
 You are now ready to execute the example RAG programs. 
 
 ## RAG with a simple word query
@@ -92,16 +79,9 @@ the following process:
 selected crime event document to generate a similarity score for each document.
 3. The documents with the highest similarity scores are sent to the LLM to augment the user's question.
 
-To try the `ask_vector_query.py` module, you will need to have installed MarkLogic 12. Please see the
-[top-level README in this repository](../README.md) for information on doing so. 
-
-You will also need to add the following environment values to your `.env` file - these identify the Azure OpenAI 
-embedding model that the example program will use to generate an embedding for your question:
-
-```
-AZURE_EMBEDDING_DEPLOYMENT_NAME=text-test-embedding-ada-002
-AZURE_EMBEDDING_DEPLOYMENT_MODEL=text-embedding-ada-002
-```
+To try the `ask_vector_query.py` module, you will need to have installed MarkLogic 12 and also have defined 
+`AZURE_EMBEDDING_DEPLOYMENT_NAME` in your `.env` file. Please see the
+[top-level README in this repository](../README.md) for more information.
 
 You can now run `ask_vector_query.py`:
 
