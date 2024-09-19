@@ -19,6 +19,12 @@ tasks.register("askWordQuery", JavaExec) {
   args question
 }
 
+tasks.register("askContextualQuery", JavaExec) {
+  mainClass = "org.example.AskContextualQuery"
+  classpath = sourceSets.main.runtimeClasspath
+  args question
+}
+
 tasks.register("askVectorQuery", JavaExec) {
   mainClass = "org.example.AskVectorQuery"
   classpath = sourceSets.main.runtimeClasspath

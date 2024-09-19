@@ -43,7 +43,33 @@ templates when using langchain4j.
 
 ## RAG with a contextual query
 
-TBD.
+In many applications built on MarkLogic, a user will search the documents in a database by leveraging a variety of
+indexes in MarkLogic, such as the universal text index, date range indexes, and geospatial indexes. This query - which
+can feature any of the many dozens of different query functions supported by MarkLogic - is referred to as a
+"contextual query" - it captures the user's context in terms of what documents they are interested in. A RAG approach
+can then account for both this contextual query and a user's question by enhancing the contextual query with a word
+query based on the words in a user's question.
+
+The `askContextualQuery` Gradle task demonstrates this approach by defining a simple contextual query that only
+selects documents containing a JSON property named `type` with a value of `public intoxication`.
+Try running the following:
+
+    ../gradlew askContextualQuery -Pquestion="What disturbances has Jane Doe caused?" 
+
+The answer will be similar to the one below. You can see how the results are based only on documents involving public
+intoxication as opposed to the entire set of fictional crime events. In addition, due to the equal weighting of the 
+word query and the combined query, the retriever is likely to pull in documents involving public intoxication but 
+not involving Jane Doe:
+
+> Regarding Jane Doe, Ashley Frazier reports a public intoxication incident in which the suspect is wearing a 
+> red dress and has long blonde hair while stumbling around and slurring her words. The suspect is alone and 
+> causing a disturbance. Ashley's motive for calling 911 is to ensure everyone's safety and to get the suspect 
+> the help she needs. In the case of John Smith, Christina Mahoney reports a public intoxication incident at 
+> 754 Main Road in San Francisco. John is stumbling around, slurring his words, and causing a disturbance 
+> while wearing a red shirt. Christina's motive for calling 911 is to report the incident to the authorities 
+> as she was worried about John's safety and that of others. Rachel Sandoval reports a public intoxication 
+> incident involving Jane Smith at 542 Hill Lane in San Francisco. Jane is stumbling around and slurring 
+> her words and causing a disturbance. Her motive for reporting the incident is also to ensure everyone's safety.
 
 
 ## RAG with a vector query
