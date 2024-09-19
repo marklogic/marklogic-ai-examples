@@ -1,12 +1,11 @@
-plugins {
-  id "net.saliman.properties" version "1.5.2"
-}
-
 dependencies {
   implementation "com.marklogic:marklogic-client-api:7.0.0"
   implementation "com.fasterxml.jackson.core:jackson-databind:2.17.2"
   implementation "dev.langchain4j:langchain4j:0.34.0"
   implementation "dev.langchain4j:langchain4j-azure-open-ai:0.34.0"
+
+  // Using 2.3.x to try to stay on Java 8; 3.x requires java 11.
+  implementation "io.github.cdimascio:dotenv-java:2.3.2"
 
   // For logging support.
   implementation "ch.qos.logback:logback-classic:1.3.14"
@@ -14,16 +13,14 @@ dependencies {
   implementation "org.slf4j:slf4j-api:2.0.13"
 }
 
-tasks.register("wordQueryExample", JavaExec) {
-  mainClass = "org.example.WordQueryExample"
+tasks.register("askWordQuery", JavaExec) {
+  mainClass = "org.example.AskWordQuery"
   classpath = sourceSets.main.runtimeClasspath
-  args question, AZURE_OPENAI_API_KEY, OPENAI_API_VERSION, AZURE_OPENAI_ENDPOINT,
-    AZURE_LLM_DEPLOYMENT_NAME, AZURE_EMBEDDING_DEPLOYMENT_NAME
+  args question
 }
 
-tasks.register("vectorQueryExample", JavaExec) {
-  mainClass = "org.example.VectorQueryExample"
+tasks.register("askVectorQuery", JavaExec) {
+  mainClass = "org.example.AskVectorQuery"
   classpath = sourceSets.main.runtimeClasspath
-  args question, AZURE_OPENAI_API_KEY, OPENAI_API_VERSION, AZURE_OPENAI_ENDPOINT,
-    AZURE_LLM_DEPLOYMENT_NAME, AZURE_EMBEDDING_DEPLOYMENT_NAME
+  args question
 }

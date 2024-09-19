@@ -22,7 +22,7 @@ retriever = ContextualQueryRetriever.create(
     Client("http://localhost:8003", digest=("ai-examples-user", "password"))
 )
 
-load_dotenv()
+load_dotenv("../.env")
 
 fake_langsmith_api_key_to_avoid_warning = "not required for this example"
 prompt = hub.pull("rlm/rag-prompt", api_key=fake_langsmith_api_key_to_avoid_warning)

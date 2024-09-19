@@ -4,7 +4,6 @@
 package org.example;
 
 import com.marklogic.client.DatabaseClient;
-import com.marklogic.client.DatabaseClientFactory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.service.AiServices;
@@ -14,7 +13,7 @@ import dev.langchain4j.service.V;
 
 import java.io.IOException;
 
-public class VectorQueryExample {
+public class AskVectorQuery {
 
     // See https://docs.langchain4j.dev/tutorials/rag for more information on RAG assistants.
     public interface Assistant {
@@ -30,15 +29,13 @@ public class VectorQueryExample {
         // A default question is here to simplify running this in an IDE.
         final String question = args.length > 0 ? args[0] : "What disturbances has Jane Doe caused?";
 
-        ChatLanguageModel chatLanguageModel = ConfigUtil.newChatLanguageModel(args);
-        EmbeddingModel embeddingModel = ConfigUtil.newEmbeddingModel(args);
-
-        DatabaseClient client = DatabaseClientFactory.newClient("localhost", 8003,
-            new DatabaseClientFactory.DigestAuthContext("ai-examples-user", "password"));
+        ChatLanguageModel chatLanguageModel = ConfigUtil.newChatLanguageModel();
+        EmbeddingModel embeddingModel = ConfigUtil.newEmbeddingModel();
+        DatabaseClient databaseClient = ConfigUtil.newDatabaseClient();
 
         Assistant assistant = AiServices.builder(Assistant.class)
             .chatLanguageModel(chatLanguageModel)
-            .contentRetriever(new VectorQueryContentRetriever(client, embeddingModel))
+            .contentRetriever(new VectorQueryContentRetriever(databaseClient, embeddingModel))
             .build();
 
         Result<String> result = assistant.chat(question);
