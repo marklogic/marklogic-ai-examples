@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class VectorQueryContentRetriever implements ContentRetriever {
+public class VectorQueryRetriever implements ContentRetriever {
 
     private final DatabaseClient databaseClient;
     private final EmbeddingModel embeddingModel;
 
-    public VectorQueryContentRetriever(DatabaseClient client, EmbeddingModel embeddingModel) {
+    public VectorQueryRetriever(DatabaseClient client, EmbeddingModel embeddingModel) {
         this.databaseClient = client;
         this.embeddingModel = embeddingModel;
     }
