@@ -9,5 +9,6 @@ AZURE_OPENAI_API_DEPLOYMENT_NAME=gpt-test1-gpt-35-turbo
 Run these commands:
 ```
 npm install
-node tellJoke.js 
+npx tsc
+npm run wordQuery
 ```
