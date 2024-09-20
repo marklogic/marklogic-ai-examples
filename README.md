@@ -29,4 +29,8 @@ A RAG approach typically benefits from sending multiple smaller segments or "chu
 see [this guide on splitting documents](splitting-langchain-java/README.md) for more information on how to split
 your documents and why you may wish to do so. 
 
+## Embedding examples
 
+To utilize the vector queries shown in the RAG Examples listed above, embeddings - vector representations of text - 
+should be added to your documents in MarkLogic. 
+See [this guide on adding embeddings](embedding-langchain-java/README.md) for more information. 

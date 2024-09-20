@@ -96,6 +96,8 @@ An example result is shown below:
 The results are similar but slightly different to the results shown above for a simple word query. You can compare
 the document URIs printed by each program to see that a different set of document is selected by each approach.
 
+For an example of how to add embeddings to your data, please see [this embeddings example](../embedding-langchain-java/README.md).
+
 ## Summary
 
 The three RAG approaches shown above - a simple word query, a contextual query, and a vector query - demonstrate how

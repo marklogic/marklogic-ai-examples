@@ -32,7 +32,8 @@ setup instructions.
 ## Splitting chunks to separate documents
 
 In this approach, the [langchain4j document splitter API](https://docs.langchain4j.dev/tutorials/rag#document-splitter)
-is used to create chunks of no more than 1,000 characters each. Each chunk is then saved to a new JSON document in a 
+and the [MarkLogic Data Movement SDK](https://docs.marklogic.com/guide/java/data-movement)
+are used to create chunks of no more than 1,000 characters each. Each chunk is then saved to a new JSON document in a 
 collection named `enron-chunk` with the following fields:
 
 - `sourceUri` = the URI of the document that the chunk was extracted from.
