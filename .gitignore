@@ -9,3 +9,4 @@ venv
 __pycache__
 gradle-local.properties
 node_modules/
+out

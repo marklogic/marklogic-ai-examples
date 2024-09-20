@@ -1,1 +1,1 @@
-include "rag-langchain-java"
+include "rag-langchain-java", "splitting-langchain-java"

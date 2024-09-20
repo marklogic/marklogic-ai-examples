@@ -26,3 +26,11 @@ tasks.register("extractEvents", Copy) {
 }
 mlDeploy.dependsOn extractEvents
 mlLoadData.dependsOn extractEvents
+
+tasks.register("extractEnronMessages", Copy) {
+  description = "Extracts the enron zip so the messages can be loaded via mlDeploy / mlLoadData from a gitignored directory."
+  from zipTree("data/enron-allen-p.zip")
+  into "src/main/ml-data"
+}
+mlDeploy.dependsOn extractEnronMessages
+mlLoadData.dependsOn extractEnronMessages
