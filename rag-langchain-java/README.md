@@ -16,7 +16,7 @@ to download an appropriate version of Gradle.
 A key feature of MarkLogic is its ability to index all text in a document during ingest. Thus, a simple approach to RAG
 with MarkLogic is to select documents based on the words in a user's question. 
 
-To demonstrate this, you can run the Gradle `wordQueryExample` task with any question. This example program uses a custom 
+To demonstrate this, you can run the Gradle `askWordQuery` task with any question. This example program uses a custom 
 langchain retriever that selects documents in the `ai-examples-content` MarkLogic database containing one or more words
 in the given question. It then includes the top 10 most relevant documents in the request that it sends to Azure OpenAI.
 For example:

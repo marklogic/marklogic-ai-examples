@@ -4,20 +4,17 @@
   "description": "An example of using MarkLogic as a retriever in a LangChain JS RAG project.",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "wordQuery": "node build/wordQuery",
-    "joke": "node build/tellJoke"
+    "askWordQuery": "node askWordQuery"
   },
   "author": "MarkLogic",
   "license": "Apache",
   "dependencies": {
-    "@langchain/core": "^0.3.2",
     "dotenv": "^16.4.5",
-    "langchain": "^0.3.2"
+    "@langchain/core": "^0.3.2",
+    "langchain": "^0.3.2",
+    "marklogic": "^3.5.0"
   },
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.2",
-    "typescript": "^5.6.2",
-    "@types/node": "20.0.0"
+    "@langchain/openai": "^0.3.0"
   }
 }
