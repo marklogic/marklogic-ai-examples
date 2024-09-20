@@ -1,0 +1,20 @@
+dependencies {
+  implementation "com.marklogic:marklogic-client-api:7.0.0"
+  implementation "com.fasterxml.jackson.core:jackson-databind:2.17.2"
+  implementation "dev.langchain4j:langchain4j:0.34.0"
+
+  // For logging support.
+  implementation "ch.qos.logback:logback-classic:1.3.14"
+  implementation "org.slf4j:jcl-over-slf4j:2.0.13"
+  implementation "org.slf4j:slf4j-api:2.0.13"
+}
+
+tasks.register("splitToMultipleDocuments", JavaExec) {
+  mainClass = "org.example.SplitToMultipleDocuments"
+  classpath = sourceSets.main.runtimeClasspath
+}
+
+tasks.register("splitToSameDocument", JavaExec) {
+  mainClass = "org.example.SplitToSameDocument"
+  classpath = sourceSets.main.runtimeClasspath
+}
