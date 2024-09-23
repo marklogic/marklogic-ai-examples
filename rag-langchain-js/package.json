@@ -4,7 +4,8 @@
   "description": "An example of using MarkLogic as a retriever in a LangChain JS RAG project.",
   "type": "module",
   "scripts": {
-    "askWordQuery": "node askWordQuery"
+    "askWordQuery": "node askWordQuery",
+    "askVectorQuery": "node askVectorQuery"
   },
   "author": "MarkLogic",
   "license": "Apache",

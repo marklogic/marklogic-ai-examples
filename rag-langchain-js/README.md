@@ -49,6 +49,39 @@ of the configured deployment model):
 > windows and graffiti, and disturbing the peace in a residential area. Possible motives for her behavior include
 > personal vendettas, revenge, coping mechanisms, and stealing intellectual property.
 
+## RAG with a vector query
+
+MarkLogic 12 has
+[new support for generative AI capabilities](https://investors.progress.com/news-releases/news-release-details/progress-announces-powerful-new-generative-ai-capabilities)
+via a set of [vector operations](https://docs.marklogic.com/12.0/vec/vector-operations). With this approach,
+documents are first selected in a manner similar to the approaches shown above - by leveraging the powerful and flexible
+set of indexes that have long been available in MarkLogic. The documents are then further filtered and sorted via
+the following process:
+
+1. An embedding of the user's question is generated using [langchain and Azure OpenAI](https://python.langchain.com/docs/integrations/text_embedding/).
+2. Using MarkLogic's new vector API, the generated embedding is compared against the embeddings in each
+   selected crime event document to generate a similarity score for each document.
+3. The documents with the highest similarity scores are sent to the LLM to augment the user's question.
+
+To try the `askVectorQuery.js` module, you will need to have installed MarkLogic 12 and also have defined
+`AZURE_EMBEDDING_DEPLOYMENT_NAME` in your `.env` file. Please see the
+[top-level README in this repository](../README.md) for more information.
+
+You can now run `askVectorQuery.js`:
+```
+node askVectorQuery.js "What disturbances has Jane Doe caused?"
+```
+
+An example result is shown below:
+
+> Jane Doe has caused disturbances at various locations, including shouting, banging on doors and windows, screaming and
+> yelling, and vandalism. The motive for her behavior is unclear, but it may be related to personal issues or mental
+> health challenges. Witnesses have described Jane Doe as a tall woman with long blonde or brown hair, wearing a bright
+> or dark-colored dress, and appearing agitated or upset."
+
+The results are similar but slightly different to the results shown above for a simple word query. You can compare
+the document URIs printed by each program to see that a different set of document is selected by each approach.
+
 
 ## Summary
 
