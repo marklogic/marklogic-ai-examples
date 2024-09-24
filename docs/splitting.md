@@ -30,7 +30,7 @@ to show how easily you can split and store chunks of text and thus get you start
 
 ## Setup
 
-Assuming you have followed the [setup instructions for these examples](../setup/README.md), then you already have a
+Assuming you have followed the [setup instructions for these examples](setup.md), then you already have a
 database in your MarkLogic cluster named `ai-examples-content`. This database contains a small set - specifically,
 3,034 text documents - of the
 [Enron email dataset](https://www.loc.gov/item/2018487913/) in a collection named `enron`. These documents are good

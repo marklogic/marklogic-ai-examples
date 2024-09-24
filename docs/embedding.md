@@ -4,8 +4,8 @@ title: Embedding Examples
 nav_order: 5
 ---
 
-The vector queries shown in the [langchain](../rag-langchain-python/README.md),
-[langchain4j](../rag-langchain-java), and [langchain.js](../rag-langchain-js/README.md) RAG examples
+The vector queries shown in the [LangChain](rag-examples/rag-python.md),
+[langchain4j](rag-examples/rag-java.md), and [LangChain.js](rag-examples/rag-javascript.md) RAG examples
 depend on embeddings - vector representations of text - being added to documents in MarkLogic. Vector queries can
 then be implemented using [the new vector functions](https://docs.marklogic.com/12.0/js/vec) in MarkLogic 12.
 This project demonstrates the use of a
@@ -21,9 +21,9 @@ documents in MarkLogic.
 
 ## Setup
 
-This example depends both on the [main setup for all examples](../setup/README.md) and also on having run the
+This example depends both on the [main setup for all examples](setup.md) and also on having run the
 "Split to multiple documents" example program in the
-[document splitting examples](../splitting-langchain-java/README.md). That example program used langchain4j to split
+[document splitting examples](splitting.md). That example program used langchain4j to split
 the text in Enron email documents and write each chunk of text to a separate document. This example will then use
 langchain4j to generate an embedding for the chunk of text and add it to each chunk document.
 
