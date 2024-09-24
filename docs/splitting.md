@@ -4,20 +4,20 @@ title: Splitting Examples
 nav_order: 4
 ---
 
-## Table of contents
-{: .no_toc .text-delta }
-
-- TOC
-{:toc}
-
-## Splitting documents with langchain4j
-
 A RAG approach typically benefits from sending multiple smaller segments or "chunks" of text to an LLM. While MarkLogic
 can efficiently ingest and index large documents, sending all the text in even a single document may either exceed
 the number of tokens allowed by your LLM or may result in slower and more expensive responses from the LLM. Thus,
 when importing or reprocessing documents in MarkLogic, your RAG approach may benefit from splitting the searchable
 text in a document into smaller segments or "chunks" that allow for much smaller and more relevent segments of text
 to be sent to the LLM.
+
+## Table of contents
+{: .no_toc .text-delta }
+
+- TOC
+{:toc}
+
+## Overview
 
 This project demonstrates two different approaches to splitting documents:
 

@@ -4,14 +4,6 @@ title: Embedding Examples
 nav_order: 5
 ---
 
-## Table of contents
-{: .no_toc .text-delta }
-
-- TOC
-{:toc}
-
-## Adding embeddings with langchain4j
-
 The vector queries shown in the [langchain](../rag-langchain-python/README.md),
 [langchain4j](../rag-langchain-java), and [langchain.js](../rag-langchain-js/README.md) RAG examples
 depend on embeddings - vector representations of text - being added to documents in MarkLogic. Vector queries can
@@ -21,6 +13,12 @@ This project demonstrates the use of a
 the [MarkLogic Data Movement SDK](https://docs.marklogic.com/guide/java/data-movement) for adding embeddings to
 documents in MarkLogic.
 
+## Table of contents
+{: .no_toc .text-delta }
+
+- TOC
+{:toc}
+
 ## Setup
 
 This example depends both on the [main setup for all examples](../setup/README.md) and also on having run the
@@ -29,7 +27,7 @@ This example depends both on the [main setup for all examples](../setup/README.m
 the text in Enron email documents and write each chunk of text to a separate document. This example will then use
 langchain4j to generate an embedding for the chunk of text and add it to each chunk document.
 
-## Add embeddings example
+## Adding embedding to documents
 
 To try the embedding example, run the following Gradle task:
 
