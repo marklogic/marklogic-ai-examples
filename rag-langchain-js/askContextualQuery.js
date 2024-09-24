@@ -17,7 +17,11 @@ const marklogicClient = createDatabaseClient({
 });
 const contextualQueryRetriever = new ContextualQueryRetriever({marklogicClient});
 
-const llm = new AzureChatOpenAI({ });
+// We need to specify the environment variables since the Python and Java examples use different default variables.
+const llm = new AzureChatOpenAI({
+  azureOpenAIApiVersion: process.env.OPENAI_API_VERSION,
+  azureOpenAIApiDeploymentName: process.env.AZURE_LLM_DEPLOYMENT_NAME
+});
 const prompt = await hub.pull("rlm/rag-prompt");
 
 let question = "What disturbances has Jane Doe caused?";
