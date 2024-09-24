@@ -1,7 +1,11 @@
-# Setup
+---
+layout: default
+title: Setup
+nav_order: 2
+---
 
-If you would like to try out the example programs, please follow these steps to set up a local MarkLogic instance
-and to deploy a small application to it:
+If you would like to try out the example programs in this repository, please follow these steps to set up a local 
+MarkLogic instance and to deploy a small application to it:
 
 1. Ensure you have Java 8 or higher installed.
 2. In a terminal window, run `cd setup`.
@@ -17,7 +21,7 @@ MarkLogic via Docker instead of the command above:
 
     docker compose -f docker-compose-12.yml up -d --build
 
-### Azure OpenAI configuration
+## Azure OpenAI configuration
 
 For any AI example program, it needs to connect to an AI service. The examples in this repository depend on
 [the Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service), though they can be
@@ -39,3 +43,4 @@ to add the following to your `.env` file.
 ```
 AZURE_EMBEDDING_DEPLOYMENT_NAME=<The name of an embedding deployment in your Azure OpenAI service>
 ```
+

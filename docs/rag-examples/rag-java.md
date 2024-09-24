@@ -1,22 +1,33 @@
-# RAG with langchain4j and MarkLogic
+---
+layout: default
+title: RAG with langchain4j
+parent: RAG Examples
+nav_order: 2
+---
 
-[Retrieval Augmented Generation (RAG)](https://docs.langchain4j.dev/tutorials/rag) is implemented with
+[Retrieval Augmented Generation (RAG)](https://docs.langchain4j.dev/tutorials/rag) can be implemented in Java with
 [langchain4j](https://docs.langchain4j.dev/intro) and MarkLogic via a "retriever". The examples in this
 directory demonstrate three different kinds of retrievers that you can consider for your own AI application.
 
+## Table of contents
+{: .no_toc .text-delta }
+
+- TOC
+{:toc}
+
 ## Setup
 
-The only system requirement for running these examples is Java 8 or higher. You can run the examples via an IDE such as 
+The only system requirement for running these examples is Java 8 or higher. You can run the examples via an IDE such as
 Visual Code or IntelliJ. You can also use [Gradle](https://gradle.org/) to run the examples, but you do not
-need Gradle installed - this repository uses the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) 
+need Gradle installed - this repository uses the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html)
 to download an appropriate version of Gradle.
 
 ## RAG with a simple word query
 
 A key feature of MarkLogic is its ability to index all text in a document during ingest. Thus, a simple approach to RAG
-with MarkLogic is to select documents based on the words in a user's question. 
+with MarkLogic is to select documents based on the words in a user's question.
 
-To demonstrate this, you can run the Gradle `askWordQuery` task with any question. This example program uses a custom 
+To demonstrate this, you can run the Gradle `askWordQuery` task with any question. This example program uses a custom
 langchain retriever that selects documents in the `ai-examples-content` MarkLogic database containing one or more words
 in the given question. It then includes the top 10 most relevant documents in the request that it sends to Azure OpenAI.
 For example:
@@ -26,19 +37,19 @@ For example:
 Running this will yield an answer similar to the below (the answer can vary based on the LLM in use and the nature
 of the configured deployment model):
 
-> Jane Johnson is a suspect in several incidents, including cybercrime, public intoxication, vandalism, assault, 
-> looting, and shoplifting. She is described as a Caucasian female in her mid-30s, with blonde hair and blue eyes. 
-> She is approximately 5'6" and has a slim build. In some incidents, she was wearing a black hoodie and jeans, 
-> while in others she wore a red coat or a black jacket. The motives for her actions are unclear, but there are 
-> some speculations that she is struggling financially, dealing with personal issues, or protesting against 
+> Jane Johnson is a suspect in several incidents, including cybercrime, public intoxication, vandalism, assault,
+> looting, and shoplifting. She is described as a Caucasian female in her mid-30s, with blonde hair and blue eyes.
+> She is approximately 5'6" and has a slim build. In some incidents, she was wearing a black hoodie and jeans,
+> while in others she wore a red coat or a black jacket. The motives for her actions are unclear, but there are
+> some speculations that she is struggling financially, dealing with personal issues, or protesting against
 > certain actions. The police have been notified and are investigating the incidents.
 
 You can alter the value of the `-Pquestion=` parameter to be any question you wish.
 
 Note as well that if you have tried the [Python langchain examples](../rag-langchain-python/README.md), you will notice
-some differences in the results. These differences are primarily due to the different prompts used by langchain and 
+some differences in the results. These differences are primarily due to the different prompts used by langchain and
 langchain4j. See [the langchain4j documentation](https://docs.langchain4j.dev/intro) for more information on prompt
-templates when using langchain4j. 
+templates when using langchain4j.
 
 
 ## RAG with a contextual query
@@ -57,18 +68,18 @@ Try running the following:
     ../gradlew askContextualQuery -Pquestion="What disturbances has Jane Doe caused?" 
 
 The answer will be similar to the one below. You can see how the results are based only on documents involving public
-intoxication as opposed to the entire set of fictional crime events. In addition, due to the equal weighting of the 
-word query and the combined query, the retriever is likely to pull in documents involving public intoxication but 
+intoxication as opposed to the entire set of fictional crime events. In addition, due to the equal weighting of the
+word query and the combined query, the retriever is likely to pull in documents involving public intoxication but
 not involving Jane Doe:
 
-> Regarding Jane Doe, Ashley Frazier reports a public intoxication incident in which the suspect is wearing a 
-> red dress and has long blonde hair while stumbling around and slurring her words. The suspect is alone and 
-> causing a disturbance. Ashley's motive for calling 911 is to ensure everyone's safety and to get the suspect 
-> the help she needs. In the case of John Smith, Christina Mahoney reports a public intoxication incident at 
-> 754 Main Road in San Francisco. John is stumbling around, slurring his words, and causing a disturbance 
-> while wearing a red shirt. Christina's motive for calling 911 is to report the incident to the authorities 
-> as she was worried about John's safety and that of others. Rachel Sandoval reports a public intoxication 
-> incident involving Jane Smith at 542 Hill Lane in San Francisco. Jane is stumbling around and slurring 
+> Regarding Jane Doe, Ashley Frazier reports a public intoxication incident in which the suspect is wearing a
+> red dress and has long blonde hair while stumbling around and slurring her words. The suspect is alone and
+> causing a disturbance. Ashley's motive for calling 911 is to ensure everyone's safety and to get the suspect
+> the help she needs. In the case of John Smith, Christina Mahoney reports a public intoxication incident at
+> 754 Main Road in San Francisco. John is stumbling around, slurring his words, and causing a disturbance
+> while wearing a red shirt. Christina's motive for calling 911 is to report the incident to the authorities
+> as she was worried about John's safety and that of others. Rachel Sandoval reports a public intoxication
+> incident involving Jane Smith at 542 Hill Lane in San Francisco. Jane is stumbling around and slurring
 > her words and causing a disturbance. Her motive for reporting the incident is also to ensure everyone's safety.
 
 

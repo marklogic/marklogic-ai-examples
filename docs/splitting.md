@@ -1,47 +1,59 @@
-# Splitting documents with langchain4j
+---
+layout: default
+title: Splitting Examples
+nav_order: 4
+---
+
+## Table of contents
+{: .no_toc .text-delta }
+
+- TOC
+{:toc}
+
+## Splitting documents with langchain4j
 
 A RAG approach typically benefits from sending multiple smaller segments or "chunks" of text to an LLM. While MarkLogic
 can efficiently ingest and index large documents, sending all the text in even a single document may either exceed
-the number of tokens allowed by your LLM or may result in slower and more expensive responses from the LLM. Thus, 
-when importing or reprocessing documents in MarkLogic, your RAG approach may benefit from splitting the searchable 
+the number of tokens allowed by your LLM or may result in slower and more expensive responses from the LLM. Thus,
+when importing or reprocessing documents in MarkLogic, your RAG approach may benefit from splitting the searchable
 text in a document into smaller segments or "chunks" that allow for much smaller and more relevent segments of text
-to be sent to the LLM. 
+to be sent to the LLM.
 
 This project demonstrates two different approaches to splitting documents:
 
 1. Splitting the text in a document and storing each chunk in a new separate document.
-2. Splitting the text in a document and storing the set of chunks in a new separate document. 
+2. Splitting the text in a document and storing the set of chunks in a new separate document.
 
-You are not limited to these approaches. For example, you may find it beneficial to not create a new document but 
+You are not limited to these approaches. For example, you may find it beneficial to not create a new document but
 rather store the set of chunks in the same document containing the searchable text. These two approaches are intended
-to show how easily you can split and store chunks of text and thus get you started with splitting your own data. 
+to show how easily you can split and store chunks of text and thus get you started with splitting your own data.
 
 ## Setup
 
 Assuming you have followed the [setup instructions for these examples](../setup/README.md), then you already have a
-database in your MarkLogic cluster named `ai-examples-content`. This database contains a small set - specifically, 
-3,034 text documents - of the 
-[Enron email dataset](https://www.loc.gov/item/2018487913/) in a collection named `enron`. These documents are good 
+database in your MarkLogic cluster named `ai-examples-content`. This database contains a small set - specifically,
+3,034 text documents - of the
+[Enron email dataset](https://www.loc.gov/item/2018487913/) in a collection named `enron`. These documents are good
 candidates for splitting as many of them have amounts of text large enough to exceed common LLM token limits. As the
 documents are text, they also are good candidates for the two approaches shown here - i.e. creating separate documents
-and leaving the original text documents untouched. 
+and leaving the original text documents untouched.
 
-You also need Java 8 in order to run these examples, which is the same version of Java needed by the aforementioned 
+You also need Java 8 in order to run these examples, which is the same version of Java needed by the aforementioned
 setup instructions.
 
 ## Splitting chunks to separate documents
 
 In this approach, the [langchain4j document splitter API](https://docs.langchain4j.dev/tutorials/rag#document-splitter)
 and the [MarkLogic Data Movement SDK](https://docs.marklogic.com/guide/java/data-movement)
-are used to create chunks of no more than 1,000 characters each. Each chunk is then saved to a new JSON document in a 
+are used to create chunks of no more than 1,000 characters each. Each chunk is then saved to a new JSON document in a
 collection named `enron-chunk` with the following fields:
 
 - `sourceUri` = the URI of the document that the chunk was extracted from.
 - `text` = the chunk of text extracted from the document identified by `sourceUri`.
 
-By limiting the number of tokens in each chunk, a RAG approach can typically send a dozen or more chunks to the LLM 
+By limiting the number of tokens in each chunk, a RAG approach can typically send a dozen or more chunks to the LLM
 without exceeding a token limit. The exact number of chunks will depend on the max number of characters you specify
-along with your LLM token limit. 
+along with your LLM token limit.
 
 To create these chunks in separate documents, run the following Gradle task:
 
@@ -81,7 +93,7 @@ is used to create chunks of no more than 1,000 characters each. Each chunk is th
 collection named `enron-chunk` with the following fields:
 
 - `sourceUri` = the URI of the document that the chunks were extracted from.
-- `chunks` = a JSON array containing each chunk. 
+- `chunks` = a JSON array containing each chunk.
 
 To create these documents, run the following Gradle task:
 
@@ -92,7 +104,7 @@ following format:
 
     (source URI)-chunks-(number of chunks).json
 
-An example document, with two chunks, is shown below. Note that it includes some overlap between the two chunks, 
+An example document, with two chunks, is shown below. Note that it includes some overlap between the two chunks,
 as the program defaults to 100 characters of overlap between chunks:
 
 ```
@@ -163,3 +175,4 @@ as the program defaults to 100 characters of overlap between chunks:
   ]
 }
 ```
+

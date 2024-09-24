@@ -1,0 +1,20 @@
+title: MarkLogic AI Examples
+repository: marklogic/marklogic-ai-examples
+remote_theme: just-the-docs/just-the-docs
+plugins:
+  - jekyll-remote-theme
+  - jekyll-tabs # See https://github.com/Ovski4/jekyll-tabs.
+
+heading_anchors: true
+
+logo: "/assets/ProgressMarkLogic_PrimaryLogo_Stacked.svg"
+
+# Aux links for the upper right navigation
+aux_links:
+  "marklogic/marklogic-ai-examples":
+    - "https://github.com/marklogic/marklogic-ai-examples"
+
+# Makes Aux links open in a new tab. Default is false
+aux_links_new_tab: false
+
+enable_copy_code_button: true
