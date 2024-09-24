@@ -23,8 +23,9 @@ Minimum versions of npm are dependent on the version of Node.
 See [Node Releases](https://nodejs.org/en/about/previous-releases#looking-for-latest-release-of-a-version-branch)
 for more information.
 
-For this LangChain.js example, in addition to the environment variables in the `.env` file described in the README in the
-root directory of this project, you'll also need to add the `AZURE_OPENAI_API_INSTANCE_NAME` setting to the `.env` file.
+For this LangChain.js example, in addition to the environment variables in the `.env` file described in the 
+[setup guide](../setup.md), you'll also need to add the `AZURE_OPENAI_API_INSTANCE_NAME` setting to the `.env` file.
+
 ```
 OPENAI_API_VERSION=2023-12-01-preview
 AZURE_OPENAI_ENDPOINT=<Your Azure OpenAI endpoint>
@@ -69,14 +70,14 @@ documents are first selected in a manner similar to the approaches shown above -
 set of indexes that have long been available in MarkLogic. The documents are then further filtered and sorted via
 the following process:
 
-1. An embedding of the user's question is generated using [langchain and Azure OpenAI](https://python.langchain.com/docs/integrations/text_embedding/).
+1. An embedding of the user's question is generated using [LangChain.js and Azure OpenAI](https://python.langchain.com/docs/integrations/text_embedding/).
 2. Using MarkLogic's new vector API, the generated embedding is compared against the embeddings in each
    selected crime event document to generate a similarity score for each document.
 3. The documents with the highest similarity scores are sent to the LLM to augment the user's question.
 
 To try the `askVectorQuery.js` module, you will need to have installed MarkLogic 12 and also have defined
 `AZURE_EMBEDDING_DEPLOYMENT_NAME` in your `.env` file. Please see the
-[top-level README in this repository](../README.md) for more information.
+[setup guide](../setup.md) for more information.
 
 You can now run `askVectorQuery.js`:
 ```
@@ -97,6 +98,6 @@ the document URIs printed by each program to see that a different set of documen
 ## Summary
 
 The three RAG approaches shown above - a simple word query, a contextual query, and a vector query - demonstrate how
-easily data can be queried and retrieved from MarkLogic using langchain. Identifying the optimal approach for your own
+easily data can be queried and retrieved from MarkLogic using LangChain.js. Identifying the optimal approach for your own
 data will require testing the approaches you choose and possibly leveraging additional MarkLogic indexes and/or
 further enriching your data.

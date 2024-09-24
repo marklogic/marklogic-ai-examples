@@ -6,7 +6,7 @@ nav_order: 1
 ---
 
 [Retrieval Augmented Generation (RAG)](https://python.langchain.com/docs/tutorials/rag/) can be implemented in Python 
-with [langchain](https://python.langchain.com/docs/introduction/) and MarkLogic via a "retriever". The examples in this
+with [LangChain](https://python.langchain.com/docs/introduction/) and MarkLogic via a "retriever". The examples in this
 directory demonstrate three different kinds of retrievers that you can consider for your own AI application.
 
 ## Table of contents
@@ -28,7 +28,7 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-Once you have a virtual environment created, run the following to install the necessary langchain dependencies along
+Once you have a virtual environment created, run the following to install the necessary LangChain dependencies along
 with the [MarkLogic Python client](https://pypi.org/project/marklogic-python-client/):
 
     pip install --quiet --upgrade langchain langchain-community langchain_openai marklogic_python_client
@@ -40,7 +40,7 @@ You are now ready to execute the example RAG programs.
 A key feature of MarkLogic is its ability to index all text in a document during ingest. Thus, a simple approach to RAG
 with MarkLogic is to select documents based on the words in a user's question.
 
-To demonstrate this, you can run the `ask_word_query.py` module with any question. The module uses a custom langchain
+To demonstrate this, you can run the `ask_word_query.py` module with any question. The module uses a custom LangChain
 retriever that selects documents in the `ai-examples-content` MarkLogic database containing one or more of the words
 in the given question. It then includes the top 10 most relevant documents in the request that it sends to Azure OpenAI.
 For example:
@@ -85,14 +85,14 @@ documents are first selected in a manner similar to the approaches shown above -
 set of indexes that have long been available in MarkLogic. The documents are then further filtered and sorted via
 the following process:
 
-1. An embedding of the user's question is generated using [langchain and Azure OpenAI](https://python.langchain.com/docs/integrations/text_embedding/).
+1. An embedding of the user's question is generated using [LangChain and Azure OpenAI](https://python.langchain.com/docs/integrations/text_embedding/).
 2. Using MarkLogic's new vector API, the generated embedding is compared against the embeddings in each
    selected crime event document to generate a similarity score for each document.
 3. The documents with the highest similarity scores are sent to the LLM to augment the user's question.
 
 To try the `ask_vector_query.py` module, you will need to have installed MarkLogic 12 and also have defined
 `AZURE_EMBEDDING_DEPLOYMENT_NAME` in your `.env` file. Please see the
-[top-level README in this repository](../README.md) for more information.
+[setup guide](../setup.md) for more information.
 
 You can now run `ask_vector_query.py`:
 
@@ -107,11 +107,11 @@ An example result is shown below:
 The results are similar but slightly different to the results shown above for a simple word query. You can compare
 the document URIs printed by each program to see that a different set of document is selected by each approach.
 
-For an example of how to add embeddings to your data, please see [this embeddings example](../embedding-langchain-java/README.md).
+For an example of how to add embeddings to your data, please see [this embeddings example](../embedding.md).
 
 ## Summary
 
 The three RAG approaches shown above - a simple word query, a contextual query, and a vector query - demonstrate how
-easily data can be queried and retrieved from MarkLogic using langchain. Identifying the optimal approach for your own
+easily data can be queried and retrieved from MarkLogic using LangChain. Identifying the optimal approach for your own
 data will require testing the approaches you choose and possibly leveraging additional MarkLogic indexes and/or
 further enriching your data. 

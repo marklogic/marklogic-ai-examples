@@ -28,7 +28,7 @@ A key feature of MarkLogic is its ability to index all text in a document during
 with MarkLogic is to select documents based on the words in a user's question.
 
 To demonstrate this, you can run the Gradle `askWordQuery` task with any question. This example program uses a custom
-langchain retriever that selects documents in the `ai-examples-content` MarkLogic database containing one or more words
+langchain4j retriever that selects documents in the `ai-examples-content` MarkLogic database containing one or more words
 in the given question. It then includes the top 10 most relevant documents in the request that it sends to Azure OpenAI.
 For example:
 
@@ -46,8 +46,8 @@ of the configured deployment model):
 
 You can alter the value of the `-Pquestion=` parameter to be any question you wish.
 
-Note as well that if you have tried the [Python langchain examples](../rag-langchain-python/README.md), you will notice
-some differences in the results. These differences are primarily due to the different prompts used by langchain and
+Note as well that if you have tried the [Python LangChain examples](rag-python.md), you will notice
+some differences in the results. These differences are primarily due to the different prompts used by LangChain and
 langchain4j. See [the langchain4j documentation](https://docs.langchain4j.dev/intro) for more information on prompt
 templates when using langchain4j.
 
@@ -99,7 +99,7 @@ the following process:
 
 To try RAG with a vector query, you will need to have installed MarkLogic 12 and also have defined
 `AZURE_EMBEDDING_DEPLOYMENT_NAME` in your `.env` file. Please see the
-[top-level README in this repository](../README.md) for more information.
+[setup guide](../setup.md) for more information.
 
 You can now run the Gradle `vectorQueryExample` task:
 
@@ -117,11 +117,11 @@ An example result is shown below:
 The results are similar but slightly different to the results shown above for a simple word query. You can compare
 the document URIs printed by each program to see that a different set of document is selected by each approach.
 
-For an example of how to add embeddings to your data, please see [this embeddings example](../embedding-langchain-java/README.md).
+For an example of how to add embeddings to your data, please see [this embeddings example](../embedding.md).
 
 ## Summary
 
 The three RAG approaches shown above - a simple word query, a contextual query, and a vector query - demonstrate how
-easily data can be queried and retrieved from MarkLogic using langchain. Identifying the optimal approach for your own
+easily data can be queried and retrieved from MarkLogic using langchain4j. Identifying the optimal approach for your own
 data will require testing the approaches you choose and possibly leveraging additional MarkLogic indexes and/or
 further enriching your data. 
