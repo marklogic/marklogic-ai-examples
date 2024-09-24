@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "askWordQuery": "node askWordQuery",
-    "askVectorQuery": "node askVectorQuery"
+    "askVectorQuery": "node askVectorQuery",
+    "askContextualQuery": "node askContextualQuery"
   },
   "author": "MarkLogic",
   "license": "Apache",

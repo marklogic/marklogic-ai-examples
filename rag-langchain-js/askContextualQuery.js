@@ -1,11 +1,11 @@
 import { config } from 'dotenv';
 import { AzureChatOpenAI } from "@langchain/openai";
 
-import { WordQueryRetriever } from "./wordQueryRetriever.js";
 import {StringOutputParser} from "@langchain/core/output_parsers";
 import {createStuffDocumentsChain} from "langchain/chains/combine_documents";
 import * as hub from "langchain/hub";
 import {createDatabaseClient} from "marklogic";
+import {ContextualQueryRetriever} from "./contextualQueryRetriever.js";
 
 config({path: "../.env"});
 const marklogicClient = createDatabaseClient({
@@ -15,15 +15,29 @@ const marklogicClient = createDatabaseClient({
   password: 'password',
   authType: 'DIGEST'
 });
+const contextualQueryRetriever = new ContextualQueryRetriever({marklogicClient});
+
 const llm = new AzureChatOpenAI({ });
 const prompt = await hub.pull("rlm/rag-prompt");
-const wordQueryRetriever = new WordQueryRetriever({marklogicClient});
 
 let question = "What disturbances has Jane Doe caused?";
 if (process.argv.length > 2) {
   question = process.argv[2];
 }
 console.log(`Question: ${question}`);
+
+const contextualQuery = {
+  "query": {
+    "queries": [
+      {
+        "value-query": {
+          "json-property": "type",
+          "text": "public intoxication"
+        }
+      }
+    ]
+  }
+}
 
 const ragChain = await createStuffDocumentsChain({
   llm,
@@ -32,6 +46,6 @@ const ragChain = await createStuffDocumentsChain({
 });
 const chainResponse = await ragChain.invoke({
   question: question,
-  context: await javaScriptRetriever.invoke(question),
+  context: await contextualQueryRetriever.invoke({"question": question, "contextualQuery": contextualQuery}),
 });
-console.log("\n\nChatbot WordQuery chainResponse: \n" + JSON.stringify(chainResponse));
+console.log("\n\nChatbot VectorQuery chainResponse: \n" + JSON.stringify(chainResponse));
