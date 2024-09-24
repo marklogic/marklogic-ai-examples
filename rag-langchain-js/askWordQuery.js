@@ -15,9 +15,14 @@ const marklogicClient = createDatabaseClient({
   password: 'password',
   authType: 'DIGEST'
 });
-const llm = new AzureChatOpenAI({ });
-const prompt = await hub.pull("rlm/rag-prompt");
 const wordQueryRetriever = new WordQueryRetriever({marklogicClient});
+
+// We need to specify the environment variables since the Python and Java examples use different default variables.
+const llm = new AzureChatOpenAI({
+  azureOpenAIApiVersion: process.env.OPENAI_API_VERSION,
+  azureOpenAIApiDeploymentName: process.env.AZURE_LLM_DEPLOYMENT_NAME
+});
+const prompt = await hub.pull("rlm/rag-prompt");
 
 let question = "What disturbances has Jane Doe caused?";
 if (process.argv.length > 2) {
@@ -32,6 +37,6 @@ const ragChain = await createStuffDocumentsChain({
 });
 const chainResponse = await ragChain.invoke({
   question: question,
-  context: await javaScriptRetriever.invoke(question),
+  context: await wordQueryRetriever.invoke(question),
 });
 console.log("\n\nChatbot WordQuery chainResponse: \n" + JSON.stringify(chainResponse));

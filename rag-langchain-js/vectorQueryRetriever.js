@@ -14,8 +14,10 @@ export class VectorQueryRetriever extends BaseRetriever {
     super(fields);
     this.marklogicClient = fields.marklogicClient;
     config({path: "../.env"});
+    // We need to specify the environment variables since the Python and Java examples use different default variables.
     this.embeddingModel = new AzureOpenAIEmbeddings({
       azureOpenAIApiDeploymentName: process.env.AZURE_EMBEDDING_DEPLOYMENT_NAME,
+      azureOpenAIApiVersion: process.env.OPENAI_API_VERSION,
     });
   }
 
