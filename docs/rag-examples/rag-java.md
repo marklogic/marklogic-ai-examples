@@ -51,6 +51,11 @@ some differences in the results. These differences are primarily due to the diff
 langchain4j. See [the langchain4j documentation](https://docs.langchain4j.dev/intro) for more information on prompt
 templates when using langchain4j.
 
+For more information, please see the following code files:
+
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-java/src/main/java/org/example/WordQueryRetriever.java).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-java/src/main/java/org/example/AskWordQuery.java) that uses the retriever.
+
 
 ## RAG with a contextual query
 
@@ -81,6 +86,11 @@ not involving Jane Doe:
 > as she was worried about John's safety and that of others. Rachel Sandoval reports a public intoxication
 > incident involving Jane Smith at 542 Hill Lane in San Francisco. Jane is stumbling around and slurring
 > her words and causing a disturbance. Her motive for reporting the incident is also to ensure everyone's safety.
+
+For more information, please see the following code files:
+
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-java/src/main/java/org/example/ContextualQueryRetriever.java).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-java/src/main/java/org/example/AskContextualQuery.java) that uses the retriever.
 
 
 ## RAG with a vector query
@@ -116,6 +126,11 @@ An example result is shown below:
 
 The results are similar but slightly different to the results shown above for a simple word query. You can compare
 the document URIs printed by each program to see that a different set of document is selected by each approach.
+
+For more information, please see the following code files:
+
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-java/src/main/java/org/example/VectorQueryRetriever.java).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-java/src/main/java/org/example/AskVectorQuery.java) that uses the retriever.
 
 For an example of how to add embeddings to your data, please see [this embeddings example](../embedding.md).
 

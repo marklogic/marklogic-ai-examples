@@ -61,6 +61,40 @@ of the configured deployment model):
 > windows and graffiti, and disturbing the peace in a residential area. Possible motives for her behavior include
 > personal vendettas, revenge, coping mechanisms, and stealing intellectual property.
 
+For more information, please see the following code files:
+
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/wordQueryRetriever.js).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/askWordQuery.js) that uses the retriever.
+
+## RAG with a contextual query
+
+In many applications built on MarkLogic, a user will search the documents in a database by leveraging a variety of
+indexes in MarkLogic, such as the universal text index, date range indexes, and geospatial indexes. This query - which
+can feature any of the many dozens of different query functions supported by MarkLogic - is referred to as a
+"contextual query" - it captures the user's context in terms of what documents they are interested in. A RAG approach
+can then account for both this contextual query and a user's question by enhancing the contextual query with a word
+query based on the words in a user's question.
+
+The `askContextualQuery.js` module demonstrates this approach by defining a simple contextual query that only
+selects documents containing a JSON property named `type` with a value of `public intoxication`.
+Try running the following:
+
+```
+node askContextualQuery.js "What disturbances has Jane Doe caused?" 
+```
+
+The answer will be similar to the one below. You can see how the results are based only on documents involving public
+intoxication as opposed to the entire set of fictional crime events:
+
+> Jane Doe (aka Jane Johnson and Jane Smith) has caused disturbances including vehicle break-ins, shoplifting, assault,
+> possible looting, and vandalism. It seems that her motives vary, from looking for something specific to owing money to
+> causing trouble. She has been described as a tall woman with blonde hair, often wearing black hoodies and jeans.
+
+For more information, please see the following code files:
+
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/askContextualQuery.js).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/contextualQueryRetriever.js) that uses the retriever.
+
 ## RAG with a vector query
 
 MarkLogic 12 has
@@ -93,6 +127,13 @@ An example result is shown below:
 
 The results are similar but slightly different to the results shown above for a simple word query. You can compare
 the document URIs printed by each program to see that a different set of document is selected by each approach.
+
+For more information, please see the following code files:
+
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/vectorQueryRetriever.js).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/askVectorQuery.js) that uses the retriever.
+
+For an example of how to add embeddings to your data, please see [this embeddings example](../embedding.md).
 
 
 ## Summary

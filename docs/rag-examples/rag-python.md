@@ -54,6 +54,11 @@ of the configured deployment model):
 > accessing confidential information without authorization, and vandalizing a building. The motives for
 > her behavior are unclear, but it may be related to personal vendettas or coping with personal issues.
 
+For more information, please see the following code files:
+
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-python/word_query_retriever.py).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-python/ask_word_query.py) that uses the retriever.
+
 ## RAG with a contextual query
 
 In many applications built on MarkLogic, a user will search the documents in a database by leveraging a variety of
@@ -75,6 +80,11 @@ intoxication as opposed to the entire set of fictional crime events:
 > Jane Doe has caused disturbances by stumbling around, slurring her words, and causing a disturbance in
 > public areas. She has been reported to be yelling at people passing by and blocking the entrance to a
 > nearby store. There are concerns for her safety and the safety of others around her.
+
+For more information, please see the following code files:
+
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-python/contextual_query_retriever.py).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-python/ask_contextual_query.py) that uses the retriever.
 
 ## RAG with a vector query
 
@@ -106,6 +116,11 @@ An example result is shown below:
 
 The results are similar but slightly different to the results shown above for a simple word query. You can compare
 the document URIs printed by each program to see that a different set of document is selected by each approach.
+
+For more information, please see the following code files:
+
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-python/vector_query_retriever.py).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-python/ask_vector_query.py) that uses the retriever.
 
 For an example of how to add embeddings to your data, please see [this embeddings example](../embedding.md).
 
