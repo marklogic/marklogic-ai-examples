@@ -37,6 +37,7 @@ AZURE_OPENAI_API_INSTANCE_NAME=<The host name of your Azure OpenAI endpoint>
 Once Node and npm are installed, and your environment is configured, you can run the examples via an IDE such as Visual
 Code or IntelliJ. To try these examples, you should first use npm to install the required Node modules:
 ```
+cd rag-langchain-js
 npm install
 ```
 

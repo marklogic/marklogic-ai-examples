@@ -20,7 +20,13 @@ directory demonstrate three different kinds of retrievers that you can consider 
 The only system requirement for running these examples is Java 8 or higher. You can run the examples via an IDE such as
 Visual Code or IntelliJ. You can also use [Gradle](https://gradle.org/) to run the examples, but you do not
 need Gradle installed - this repository uses the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html)
-to download an appropriate version of Gradle.
+to download an appropriate version of Gradle. To start using these examples, you'll need to be in this example
+directory. If you are not already in this example directory, run this command:
+
+```
+cd rag-langchain-java
+```
+
 
 ## RAG with a simple word query
 

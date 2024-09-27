@@ -41,6 +41,13 @@ and leaving the original text documents untouched.
 You also need Java 8 in order to run these examples, which is the same version of Java needed by the aforementioned
 setup instructions.
 
+Finally, to start using these examples, you'll need to be in this example  directory. If you are not already in this
+example directory, run this command:
+
+```
+cd splitting-langchain-java
+```
+
 ## Splitting chunks to separate documents
 
 In this approach, the [langchain4j document splitter API](https://docs.langchain4j.dev/tutorials/rag#document-splitter)
