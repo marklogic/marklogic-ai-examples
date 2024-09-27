@@ -29,6 +29,13 @@ langchain4j to generate an embedding for the chunk of text and add it to each ch
 
 ## Adding embedding to documents
 
+To use this example, you'll need to be in this example directory. If you are not already in this example directory, run
+this command:
+
+```
+cd embedding-langchain-java
+```
+
 To try the embedding example, run the following Gradle task:
 
     ../gradlew addEmbeddings
