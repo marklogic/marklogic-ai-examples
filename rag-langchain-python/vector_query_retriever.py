@@ -34,6 +34,7 @@ op.fromSearchDocs(
     null, {{'scoreMethod': 'score-bm25'}}
   )
   .limit(100)
+  .bind(op.as('transcript', op.xpath('doc', '/transcript')))
   .joinInner(
     op.fromView('example','events', '', op.fragmentIdCol('vectorsDocId')),
     op.on(
@@ -45,6 +46,7 @@ op.fromSearchDocs(
     op.vec.vector(op.col('embedding')),
     op.vec.vector(vec.vector({}))
   )))
+  .select(['uri', 'transcript', 'similarity'])
   .orderBy(op.desc(op.col('similarity')))
   .limit(10)
   .result()
@@ -56,9 +58,10 @@ op.fromSearchDocs(
     def _get_relevant_documents(self, query: str) -> List[Document]:
         query_embedding = self.embedding_generator.embed_query(query)
         eval_script = self._build_eval_script(query, query_embedding)
-        results = self.client.eval(javascript=eval_script)
+        optic_rows = self.client.eval(javascript=eval_script)
+        print(optic_rows[1].keys())
 
-        print(f"Count of MarkLogic documents sent to the LLM: {len(results)}")
-        for result in results:
-            print(f"URI: {result['uri']}")
-        return map(lambda doc: Document(page_content=doc["text"]), results)
+        print(f"Count of MarkLogic chunks sent to the LLM: {len(optic_rows)}")
+        for optic_row in optic_rows:
+            print(f"URI: {optic_row['uri']}")
+        return map(lambda optic_row: Document(page_content=optic_row["transcript"]), optic_rows)

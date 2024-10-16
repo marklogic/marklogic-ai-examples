@@ -20,11 +20,6 @@
             "val": "vec:vector(embedding)",
             "dimension": "1536",
             "invalidValues": "reject"
-          },
-          {
-            "name": "text",
-            "scalarType": "string",
-            "val": "transcript"
           }
         ]
       }
