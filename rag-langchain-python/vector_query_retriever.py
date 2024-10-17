@@ -31,7 +31,11 @@ const op = require('/MarkLogic/optic');
 
 op.fromSearchDocs(
     cts.andQuery([cts.wordQuery({}), cts.collectionQuery('events')]),
-    null, {{'scoreMethod': 'score-bm25'}}
+    null,
+    {{
+      'scoreMethod': 'score-bm25',
+      'bm25LengthWeight': 0.5
+    }}
   )
   .limit(100)
   .bind(op.as('transcript', op.xpath('doc', '/transcript')))
@@ -42,12 +46,17 @@ op.fromSearchDocs(
       op.fragmentIdCol('vectorsDocId')
     )
   )
-  .bind(op.as('similarity', op.vec.cosineSimilarity(
-    op.vec.vector(op.col('embedding')),
-    op.vec.vector(vec.vector({}))
-  )))
-  .select(['uri', 'transcript', 'similarity'])
-  .orderBy(op.desc(op.col('similarity')))
+  .bind(op.as('cosineSim',
+    op.vec.cosineSimilarity(
+        op.vec.vector(op.col('embedding')),
+        op.vec.vector(vec.vector({}))
+    )
+  ))
+  .bind(op.as('hybridScore',
+    op.vec.vectorScore(op.col('score'), op.col('cosineSim'), 0.1)
+  ))
+  .select(['uri', 'transcript', 'hybridScore'])
+  .orderBy(op.desc(op.col('hybridScore')))
   .limit(10)
   .result()
         """.format(
