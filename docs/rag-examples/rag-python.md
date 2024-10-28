@@ -124,6 +124,58 @@ For more information, please see the following code files:
 
 For an example of how to add embeddings to your data, please see [this embeddings example](../embedding.md).
 
+## RAG with Semaphore Models
+
+[Progress Semaphore](https://www.progress.com/semaphore/platform) is a modular semantic AI platform that provides the
+semantic layer of your digital ecosystem so you can manage knowledge models, extract facts and classify the context and
+meaning from structured and unstructured information and generate rich semantic metadata. 
+
+Details for classifying text are specific to your Semaphore installation. However, for a Progress Data Cloud
+installation, see the
+[Classification and Language Service Developer's Guide](https://portal.smartlogic.com/docs/5.6/classification_server_-_developers_guide/welcome).
+
+Once you have [classified](https://www.progress.com/semaphore/platform/semantic-knowledge-classification) your documents
+and stored the extracted concepts on the documents, you can also search for those concepts as a part of the RAG
+retriever. A typical strategy is to use your custom model and the Semaphore Classifier to extract concepts from the
+user's question. With that list of concepts, you can easily search your target documents for those that have matching
+concepts, and then include those documents in the list of documents returned by the retriever.
+
+For instance, assume that you have extracted the concepts from a document and stored those concepts in a new JSON block in the
+document that looks something like this:
+```
+"concepts": [
+  {
+    "CrimeReportsModel-Crimes": "Public Order Crime"
+  }, 
+  {
+    "CrimeReportsModel-Crimes": "Disturbing the Peace"
+  },
+  ...
+]
+```
+You can search for all documents that have been classified with the `Crimes` concept in the `CrimesReport` model using
+a CTS query:
+```
+cts.jsonPropertyValueQuery('CrimeReportsModel-Crimes', 'Crimes')
+```
+That query can be used on its own or as part of more complex query that retrieves the documents that provide the best
+context information to your LLM. One possibility is to adapt the vector retriever to use that query in the initial
+documents query. So, as an adaptation from `vector_query_retriever.py`, this uses the `jsonPropertyValueQuery` instead
+of the `wordQuery`.
+```
+op.fromSearchDocs(
+  cts.andQuery([
+    cts.jsonPropertyValueQuery('CrimeReportsModel-Crimes', 'Crimes'),
+    cts.collectionQuery('events')
+  ]),
+  null,
+  {
+    'scoreMethod': 'score-bm25',
+    'bm25LengthWeight': 0.5
+  }
+)
+```
+
 ## Summary
 
 The three RAG approaches shown above - a simple word query, a contextual query, and a vector query - demonstrate how
