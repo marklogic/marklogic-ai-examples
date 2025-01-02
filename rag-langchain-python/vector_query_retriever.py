@@ -20,15 +20,13 @@ class VectorQueryRetriever(BaseRetriever):
             embedding_generator=embedding_generator
         )
 
-    def _build_eval_script(self, query, query_embedding):
+    def _build_optic_query(self, query, query_embedding):
         words = []
         for word in query.split():
             if len(word) > 2:
                 words.append(word.lower().replace("?", ""))
 
         return """
-const op = require('/MarkLogic/optic');
-
 op.fromSearchDocs(
     cts.andQuery([cts.wordQuery({}), cts.collectionQuery('events')]),
     null,
@@ -58,7 +56,6 @@ op.fromSearchDocs(
   .select(['uri', 'transcript', 'hybridScore'])
   .orderBy(op.desc(op.col('hybridScore')))
   .limit(10)
-  .result()
         """.format(
             words,
             query_embedding
@@ -66,11 +63,11 @@ op.fromSearchDocs(
 
     def _get_relevant_documents(self, query: str) -> List[Document]:
         query_embedding = self.embedding_generator.embed_query(query)
-        eval_script = self._build_eval_script(query, query_embedding)
-        optic_rows = self.client.eval(javascript=eval_script)
-        print(optic_rows[1].keys())
+        eval_script = self._build_optic_query(query, query_embedding)
+        optic_response = self.client.rows.query(eval_script, format="json")
+        optic_rows = optic_response["rows"]
 
         print(f"Count of MarkLogic chunks sent to the LLM: {len(optic_rows)}")
         for optic_row in optic_rows:
             print(f"URI: {optic_row['uri']}")
-        return map(lambda optic_row: Document(page_content=optic_row["transcript"]), optic_rows)
+        return map(lambda optic_row: Document(page_content=optic_row["transcript"]["value"]), optic_rows)
