@@ -18,7 +18,7 @@ directory demonstrates one kind of retriever that you can consider for your own 
 ## Setup
 
 The only system requirements for running these examples are Node 18.x, 19.x, or 20.x
-(see [LangChain.js Installation]https://js.langchain.com/v0.1/docs/get_started/installation/) and npm.
+(see [LangChain.js Installation](https://js.langchain.com/v0.1/docs/get_started/installation/)) and npm.
 Minimum versions of npm are dependent on the version of Node.
 See [Node Releases](https://nodejs.org/en/about/previous-releases#looking-for-latest-release-of-a-version-branch)
 for more information.
@@ -93,8 +93,8 @@ intoxication as opposed to the entire set of fictional crime events:
 
 For more information, please see the following code files:
 
-- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/askContextualQuery.js).
-- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/contextualQueryRetriever.js) that uses the retriever.
+- The [LangChain retriever](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/contextualQueryRetriever.js).
+- The [example program](https://github.com/marklogic/marklogic-ai-examples/blob/main/rag-langchain-js/askContextualQuery.js) that uses the retriever.
 
 ## RAG with a vector query
 
