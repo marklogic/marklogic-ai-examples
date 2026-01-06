@@ -12,11 +12,13 @@
   "license": "Apache",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "@langchain/core": "^0.3.2",
-    "langchain": "^0.3.2",
-    "marklogic": "^3.5.0"
+    "langchain": "1.2.4",
+    "marklogic": "4.0.0"
   },
   "devDependencies": {
-    "@langchain/openai": "^0.3.0"
+    "@langchain/openai": "1.2.1"
+  },
+  "overrides": {
+    "qs": "^6.14.1"
   }
 }
